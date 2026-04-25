@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>媒析引擎 · 维舆</title>
+<link rel="stylesheet" href="/static/engine-shared.css">
+<link rel="stylesheet" href="/static/veyu-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-ink left" aria-hidden="true">
+      <img class="topbar-asset left" src="/assets/svg/header-bamboo-corner.svg" alt="" loading="eager" decoding="async">
+    </div>
+    <div class="brand-crest">
+      <img class="brand-logo-seal" src="/assets/svg/logo-seal-red.svg" alt="" loading="eager" decoding="async">
+      <div class="brand-block">
+        <div class="brand-kicker">Veyrafish Platform</div>
+        <div class="brand-title">维舆-新时代高效通用多维度舆论平台</div>
+        <div class="brand-subtitle">Veyrafish · 以微知著，以舆定策</div>
+      </div>
+    </div>
+    <div class="top-nav">
+      <a class="nav-chip" href="/">总览</a>
+      <a class="nav-chip" href="/insight">洞察</a>
+      <a class="nav-chip active" href="/media">媒析</a>
+      <a class="nav-chip" href="/query">检索</a>
+      <a class="nav-chip" href="/forum">论坛</a>
+      <a class="nav-chip" href="/report">报告</a>
+    </div>
+    <div class="utility-actions">
+      <div class="utility-menu" id="utilityMenu">
+        <button class="utility-trigger" id="utilityMenuTrigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="utilityMenuPopover">
+          <span class="utility-trigger-icon" aria-hidden="true"></span>系统
+        </button>
+        <div class="utility-popover" id="utilityMenuPopover" role="dialog" aria-modal="false" aria-label="系统菜单">
+          <div class="utility-popover-title">
+            <span>System actions</span>
+            <button class="utility-popover-close" id="utilityMenuClose" type="button" aria-label="关闭">×</button>
+          </div>
+          <div class="utility-popover-actions">
+            <button class="page-action-button refresh" id="pageRefreshButton">刷新界面</button>
+            <button class="config-button" id="openConfigButton">系统配置</button>
+            <button class="page-action-button shutdown" id="shutdownButton">关闭系统</button>
+          </div>
+          <div class="utility-popover-hint">这些操作属于系统控制层，建议仅在需要时展开。</div>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-ink right" aria-hidden="true">
+      <img class="topbar-asset right" src="/assets/svg/header-bamboo-corner.svg" alt="" loading="eager" decoding="async">
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="engine-hero">
+    <div class="engine-hero-copy">
+      <span class="engine-hero-kicker">Media Engine · M-02</span>
+      <div class="engine-hero-title">媒析引擎 · 观澜辨势</div>
+      <div class="engine-hero-subtitle">众声并起，其源可稽；百端纷陈，其势可辨。深度解析多媒体内容，剖析传播链路与媒体态度画像。</div>
+      <div class="engine-hero-quote">众声杂遝，而源流可辨。</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="status-indicator" id="status-media" title="媒析引擎状态"></span>
+      <span style="font-size:12px;color:var(--ink-soft);">Media Engine · :8502</span>
+    </div>
+  </div>
+
+  <!-- THREE-COLUMN BODY -->
+  <div class="engine-body">
+
+    <!-- LEFT: 媒体筛选 -->
+    <aside class="engine-sidebar">
+      <div class="engine-sidebar-header">
+        <span class="section-title">媒体筛选</span>
+        <span class="section-kicker">Filter</span>
+      </div>
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-item active"><span class="sidebar-nav-dot"></span>全部来源</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>新闻媒体</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>社交平台</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>视频平台</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>自媒体</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>海外媒体</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>地域来源</li>
+      </ul>
+      <div class="sidebar-nav-placeholder">
+        筛选功能正在开发中。当前可在工作区查看引擎分析进度。
+      </div>
+    </aside>
+
+    <!-- CENTER: 工作区 -->
+    <section class="engine-workspace">
+      <div class="engine-workspace-header">
+        <span class="section-title">Media Engine 工作区</span>
+        <span class="section-kicker">Workspace</span>
+      </div>
+      <div class="engine-workspace-body" id="workspaceBody">
+        <div class="engine-placeholder" id="enginePlaceholder">
+          <img src="/assets/svg/icon-media-brush.svg" alt="" style="width:48px;height:48px;opacity:0.4;">
+          <div class="engine-placeholder-title">媒析引擎未运行</div>
+          <div class="engine-placeholder-text">请在系统配置中完成设置，然后从总览页启动分析，媒析引擎将自动接收查询并开始分析。</div>
+          <span class="engine-placeholder-badge">状态：<span id="engineStatusText">未运行</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: 传播诊断 -->
+    <aside class="engine-panel">
+      <div class="engine-panel-header">
+        <span class="section-title">传播诊断</span>
+        <span class="section-kicker">Diagnosis</span>
+      </div>
+      <div class="engine-panel-body">
+        <div class="summary-card">
+          <div class="summary-card-title">首发源</div>
+          <div class="summary-card-value">—</div>
+          <div class="summary-card-note">最早发布该事件的媒体或平台。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-title">扩散高峰</div>
+          <div class="summary-card-value">—</div>
+          <div class="summary-card-note">传播量最大的时间节点。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-title">媒体倾向</div>
+          <div class="summary-card-value">—</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-title">传播建议</div>
+          <div class="summary-card-note">引擎完成后提供。</div>
+        </div>
+        <div class="summary-placeholder">
+          传播诊断摘要将在引擎完成分析后自动填充。
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- CONSOLE -->
+  <div class="engine-console">
+    <div class="console-header">
+      <span class="console-title">Media Engine · 控制台纪要</span>
+      <span class="console-status" id="connectionStatus">连接中...</span>
+    </div>
+    <div class="console-output" id="engineConsole"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <img class="footer-mountain-left" src="/assets/svg/footer-mountain-left.svg" alt="" loading="lazy" decoding="async">
+    <img class="footer-mountain-right" src="/assets/svg/footer-mountain-right-boat.svg" alt="" loading="lazy" decoding="async">
+    <div class="footer-center">
+      <div class="footer-brand" style="font:15px/1 'STKaiti','KaiTi','楷体',serif;letter-spacing:6px;color:rgba(100,78,58,0.75);">
+        <span>以 微 知 著 · 以 舆 定 策</span>
+        <span style="margin-left:8px;color:#8B1A1A;border:1px solid #8B1A1A;font-size:11px;letter-spacing:0;padding:2px 3px;font-family:'STSong','SimSun',serif;">维</span>
+      </div>
+      <div class="footer-right">
+        <span id="connectionStatus">连接中...</span>
+        <span id="systemTime"></span>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-wrap -->
+
+<!-- SHUTDOWN CONFIRM -->
+<div class="confirm-overlay" id="shutdownConfirmModal" aria-hidden="true">
+  <div class="confirm-dialog danger">
+    <div class="confirm-header">
+      <div class="confirm-title" id="shutdownStrongText">确定要关闭系统吗？</div>
+      <button class="confirm-close" id="closeShutdownConfirm" aria-label="关闭">×</button>
+    </div>
+    <div class="confirm-body">
+      <div class="confirm-text">
+        <div class="confirm-subtext">将关闭系统并停止所有引擎进程。</div>
+        <div class="confirm-list" id="shutdownPortList"></div>
+      </div>
+    </div>
+    <div class="confirm-actions">
+      <button class="confirm-button" id="cancelShutdownButton">取消</button>
+      <button class="confirm-button danger" id="confirmShutdownButton">立即关闭系统</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIG MODAL -->
+<div class="config-modal-overlay" id="configModal">
+  <div class="config-modal">
+    <div class="config-modal-header">
+      <div class="config-modal-title">LLM 配置 - 与 .env 文件双向同步</div>
+      <div class="config-modal-actions">
+        <button class="config-secondary-button" id="refreshConfigButton">刷新</button>
+        <button class="config-close-button" id="closeConfigModal" aria-label="关闭配置窗口">×</button>
+      </div>
+    </div>
+    <div class="config-modal-body" id="configFormContainer"></div>
+    <div class="config-modal-footer">
+      <div class="config-status-message" id="configStatusMessage"></div>
+      <div class="config-modal-footer-actions">
+        <button class="config-save-button" id="saveConfigButton">保存</button>
+        <button class="config-start-button" id="startSystemButton">保存并启动系统</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="message" id="message"></div>
+
+<script src="/static/engine-shared.js"></script>
+<script>
+const ENGINE_NAME = 'media';
+const ENGINE_PORT = 8502;
+let engineIframe = null;
+
+function updateWorkspace() {
+  const running = appStatus[ENGINE_NAME] === 'running';
+  const placeholder = document.getElementById('enginePlaceholder');
+  const statusText = document.getElementById('engineStatusText');
+  const workspaceBody = document.getElementById('workspaceBody');
+  if (statusText) statusText.textContent = running ? '运行中' : (appStatus[ENGINE_NAME] === 'starting' ? '启动中' : '未运行');
+  if (running) {
+    if (placeholder) placeholder.style.display = 'none';
+    if (!engineIframe) {
+      engineIframe = document.createElement('iframe');
+      engineIframe.className = 'engine-iframe';
+      let iframeSrc = 'http://' + window.location.hostname + ':' + ENGINE_PORT;
+      try {
+        const raw = localStorage.getItem('veyrafish_search');
+        if (raw) {
+          const s = JSON.parse(raw);
+          if (s && s.query && (Date.now() - s.timestamp < 7200000)) {
+            iframeSrc += '?query=' + encodeURIComponent(s.query) + '&auto_search=true';
+          }
+        }
+      } catch (e) { /* ignore */ }
+      engineIframe.src = iframeSrc;
+      workspaceBody.appendChild(engineIframe);
+    }
+    if (engineIframe) engineIframe.style.display = 'block';
+  } else {
+    if (placeholder) placeholder.style.display = '';
+    if (engineIframe) engineIframe.style.display = 'none';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  initUtilityMenu();
+  bindSharedListeners();
+  initEngineSocket(ENGINE_NAME);
+  ensureSystemReady();
+  updateTime();
+  setInterval(updateTime, 1000);
+  checkStatus();
+  setInterval(checkStatus, 10000);
+  startConnectionProbe();
+  fetch('/api/output/' + ENGINE_NAME).then(r => r.json()).then(data => { if (data.success && data.output) data.output.forEach(line => appendLog(line)); }).catch(() => {});
+  setInterval(function () { checkStatus(); updateWorkspace(); }, 5000);
+});
+
+const _origUpdateAppStatus = updateAppStatus;
+function updateAppStatus(data) { _origUpdateAppStatus(data); updateWorkspace(); }
+</script>
+</body>
+</html>

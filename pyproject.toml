@@ -1,0 +1,163 @@
+[build-system]
+requires = ["setuptools>=68", "setuptools-scm"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "veyrafish"
+version = "1.2.1"
+description = "维舆 / Veyrafish - 多智能体舆情分析系统"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "GPL-2.0" }
+
+# ── 核心运行时依赖 ─────────────────────────────────────────
+dependencies = [
+    "flask==2.3.3",
+    "flask-socketio==5.3.6",
+    "python-socketio==5.8.0",
+    "eventlet==0.33.3",
+    "pydantic==2.5.2",
+    "pydantic-settings==2.2.1",
+    "loguru>=0.7.0",
+    "python-dotenv>=1.0.0",
+    "tenacity==8.2.2",
+    "requests==2.31.0",
+    "httpx==0.28.1",
+    "openai>=1.3.0",
+    "tavily-python>=0.3.0",
+    "SQLAlchemy==2.0.35",
+    "asyncpg==0.29.0",
+    "aiofiles==23.2.1",
+    "aiohttp>=3.8.0",
+    "json-repair==0.53.0",
+]
+
+# ── 可选依赖分组 ───────────────────────────────────────────
+
+[project.optional-dependencies]
+
+# Web 服务层
+web = [
+    "streamlit==1.28.1",
+    "fastapi==0.110.2",
+    "uvicorn==0.29.0",
+]
+
+# 数据库驱动（按需选择）
+db = [
+    "pymysql==1.1.0",
+    "aiomysql==0.2.0",
+    "aiosqlite==0.21.0",
+    "psycopg[binary]>=3.1.0",
+    "redis>=4.6.0",
+    "motor>=3.3.0",
+    "cryptography==42.0.7",
+]
+
+# 爬虫系统
+crawler = [
+    "playwright==1.45.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=4.9.0",
+    "parsel==1.9.1",
+    "pyexecjs==1.5.1",
+    "xhshow>=0.1.3",
+    "Pillow==9.5.0",
+    "opencv-python>=4.8.0",
+    "socksio==1.0.0",
+    "PySocks>=1.7.1",
+]
+
+# 机器学习与情感分析
+ml = [
+    "torch>=2.0.0",
+    "transformers>=4.30.0",
+    "sentence-transformers>=2.2.2",
+    "scikit-learn>=1.3.0",
+    "xgboost>=2.0.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "jieba==0.42.1",
+    "regex>=2023.8.8",
+]
+
+# 可视化与报告导出
+report = [
+    "weasyprint>=60.0",
+    "plotly>=5.17.0",
+    "matplotlib==3.9.0",
+    "wordcloud==1.9.3",
+]
+
+# 开发与测试工具
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "typer>=0.9.0",
+    "python-dateutil>=2.8.2",
+    "pytz>=2023.3",
+    "tqdm>=4.65.0",
+]
+
+# 完整安装（除 ml/crawler，避免重依赖体积过大）
+full = [
+    "veyrafish[web,db,report,dev]",
+]
+
+# ── 工具配置 ───────────────────────────────────────────────
+
+[tool.pytest.ini_options]
+# 测试根目录
+testpaths = ["tests"]
+# 递归发现测试文件
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+# 输出详情
+addopts = "-v --tb=short"
+# 不收集的路径
+norecursedirs = [
+    ".git", "__pycache__", ".venv", "venv",
+    "node_modules", "*.egg-info",
+    "SentimentAnalysisModel", "MindSpider",
+]
+# asyncio 模式需要 pytest-asyncio 插件；如未安装可注释此行
+# asyncio_mode = "auto"
+
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311", "py312"]
+include = "\\.pyi?$"
+exclude = '''
+/(
+    \.git | __pycache__ | \.venv | venv
+  | SentimentAnalysisModel | MindSpider
+)/
+'''
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = ["E203", "W503"]
+exclude = [
+    ".git", "__pycache__", ".venv", "venv",
+    "SentimentAnalysisModel", "MindSpider",
+]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = false
+warn_unused_configs = true
+ignore_missing_imports = true
+exclude = ["SentimentAnalysisModel/", "MindSpider/"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "veyrafish_core*",
+    "QueryEngine*", "MediaEngine*", "InsightEngine*",
+    "ReportEngine*", "ForumEngine*", "utils*", "tests*",
+]
+exclude = ["SentimentAnalysisModel*", "MindSpider*"]

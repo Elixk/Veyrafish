@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "updated": "2026-04-14",
+  "skill_id": "prompt-library",
+  "description": "Local prompt asset catalog for repository-owned prompts.",
+  "categories": [
+    {
+      "id": "coding",
+      "display_name": "Coding",
+      "description": "Implementation, debugging, refactoring, and code-generation prompts."
+    },
+    {
+      "id": "research",
+      "display_name": "Research",
+      "description": "Research, synthesis, source comparison, and analysis prompts."
+    },
+    {
+      "id": "writing",
+      "display_name": "Writing",
+      "description": "Writing, editing, summarization, and document-creation prompts."
+    },
+    {
+      "id": "review",
+      "display_name": "Review",
+      "description": "Code review, quality review, and evaluation prompts."
+    },
+    {
+      "id": "translation",
+      "display_name": "Translation",
+      "description": "Translation, rewrite, localization, and bilingual prompt assets."
+    },
+    {
+      "id": "agent-control",
+      "display_name": "Agent Control",
+      "description": "Delegation, orchestration, role, and behavior-control prompts."
+    },
+    {
+      "id": "business",
+      "display_name": "Business",
+      "description": "Business analysis, strategy, PM, and operational prompts."
+    }
+  ],
+  "prompts": [
+    {
+      "id": "cn-to-en",
+      "title": "学术论文中转英翻译",
+      "category": "translation",
+      "path": "prompts/translation/cn-to-en.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "en-to-cn",
+      "title": "学术论文英转中翻译",
+      "category": "translation",
+      "path": "prompts/translation/en-to-cn.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "cn-to-cn",
+      "title": "中文论文草稿重构",
+      "category": "writing",
+      "path": "prompts/writing/cn-to-cn.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "compress",
+      "title": "学术论文缩写",
+      "category": "writing",
+      "path": "prompts/writing/compress.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "expand",
+      "title": "学术论文扩写",
+      "category": "writing",
+      "path": "prompts/writing/expand.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "polish-en",
+      "title": "英文论文表达润色",
+      "category": "writing",
+      "path": "prompts/writing/polish-en.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "polish-cn",
+      "title": "中文论文表达润色",
+      "category": "writing",
+      "path": "prompts/writing/polish-cn.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "de-ai-latex-en",
+      "title": "去 AI 味（LaTeX 英文）",
+      "category": "writing",
+      "path": "prompts/writing/de-ai-latex-en.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "de-ai-word-cn",
+      "title": "去 AI 味（Word 中文）",
+      "category": "writing",
+      "path": "prompts/writing/de-ai-word-cn.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "paper-architecture-diagram",
+      "title": "论文架构图生成",
+      "category": "writing",
+      "path": "prompts/writing/paper-architecture-diagram.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "experiment-chart-recommend",
+      "title": "实验绘图推荐",
+      "category": "writing",
+      "path": "prompts/writing/experiment-chart-recommend.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "figure-caption",
+      "title": "生成图的标题",
+      "category": "writing",
+      "path": "prompts/writing/figure-caption.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "table-caption",
+      "title": "生成表的标题",
+      "category": "writing",
+      "path": "prompts/writing/table-caption.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "experiment-analysis",
+      "title": "实验分析",
+      "category": "writing",
+      "path": "prompts/writing/experiment-analysis.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "logic-check",
+      "title": "逻辑检查",
+      "category": "review",
+      "path": "prompts/review/logic-check.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "reviewer-perspective",
+      "title": "论文整体以 Reviewer 视角进行审视",
+      "category": "review",
+      "path": "prompts/review/reviewer-perspective.md",
+      "source": "awesome-ai-research-writing"
+    },
+    {
+      "id": "model-selection",
+      "title": "模型选择",
+      "category": "research",
+      "path": "prompts/research/model-selection.md",
+      "source": "awesome-ai-research-writing"
+    }
+  ]
+}

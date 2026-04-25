@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>检索引擎 · 维舆</title>
+<link rel="stylesheet" href="/static/engine-shared.css">
+<link rel="stylesheet" href="/static/veyu-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-ink left" aria-hidden="true">
+      <img class="topbar-asset left" src="/assets/svg/header-bamboo-corner.svg" alt="" loading="eager" decoding="async">
+    </div>
+    <div class="brand-crest">
+      <img class="brand-logo-seal" src="/assets/svg/logo-seal-red.svg" alt="" loading="eager" decoding="async">
+      <div class="brand-block">
+        <div class="brand-kicker">Veyrafish Platform</div>
+        <div class="brand-title">维舆-新时代高效通用多维度舆论平台</div>
+        <div class="brand-subtitle">Veyrafish · 以微知著，以舆定策</div>
+      </div>
+    </div>
+    <div class="top-nav">
+      <a class="nav-chip" href="/">总览</a>
+      <a class="nav-chip" href="/insight">洞察</a>
+      <a class="nav-chip" href="/media">媒析</a>
+      <a class="nav-chip active" href="/query">检索</a>
+      <a class="nav-chip" href="/forum">论坛</a>
+      <a class="nav-chip" href="/report">报告</a>
+    </div>
+    <div class="utility-actions">
+      <div class="utility-menu" id="utilityMenu">
+        <button class="utility-trigger" id="utilityMenuTrigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="utilityMenuPopover">
+          <span class="utility-trigger-icon" aria-hidden="true"></span>系统
+        </button>
+        <div class="utility-popover" id="utilityMenuPopover" role="dialog" aria-modal="false" aria-label="系统菜单">
+          <div class="utility-popover-title">
+            <span>System actions</span>
+            <button class="utility-popover-close" id="utilityMenuClose" type="button" aria-label="关闭">×</button>
+          </div>
+          <div class="utility-popover-actions">
+            <button class="page-action-button refresh" id="pageRefreshButton">刷新界面</button>
+            <button class="config-button" id="openConfigButton">系统配置</button>
+            <button class="page-action-button shutdown" id="shutdownButton">关闭系统</button>
+          </div>
+          <div class="utility-popover-hint">这些操作属于系统控制层，建议仅在需要时展开。</div>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-ink right" aria-hidden="true">
+      <img class="topbar-asset right" src="/assets/svg/header-bamboo-corner.svg" alt="" loading="eager" decoding="async">
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="engine-hero">
+    <div class="engine-hero-copy">
+      <span class="engine-hero-kicker">Query Engine · Q-03</span>
+      <div class="engine-hero-title">检索引擎 · 穷源索隐</div>
+      <div class="engine-hero-subtitle">钩沉索隐，求其本末。精准国内外信息搜索，支持布尔检索与话题交叉过滤，汇聚证据原文。</div>
+      <div class="engine-hero-quote">欲知其来，先求其本；欲辨其变，当考其迹。</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="status-indicator" id="status-query" title="检索引擎状态"></span>
+      <span style="font-size:12px;color:var(--ink-soft);">Query Engine · :8503</span>
+    </div>
+  </div>
+
+  <!-- THREE-COLUMN BODY -->
+  <div class="engine-body">
+
+    <!-- LEFT: 检索过滤 -->
+    <aside class="engine-sidebar">
+      <div class="engine-sidebar-header">
+        <span class="section-title">检索过滤</span>
+        <span class="section-kicker">Filter</span>
+      </div>
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-item active"><span class="sidebar-nav-dot"></span>全部结果</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>国内新闻</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>海外新闻</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>社交媒体</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>学术报告</li>
+      </ul>
+      <div style="padding:12px;border-top:1px solid rgba(107,72,49,0.1);">
+        <div style="font-size:11px;color:var(--ink-soft);margin-bottom:8px;letter-spacing:0.06em;text-transform:uppercase;">情感倾向</div>
+        <ul class="sidebar-nav" style="padding:0;gap:2px;">
+          <li class="sidebar-nav-item"><span class="sidebar-nav-dot" style="background:#5d9e55;"></span>正面</li>
+          <li class="sidebar-nav-item"><span class="sidebar-nav-dot" style="background:#aaa;"></span>中性</li>
+          <li class="sidebar-nav-item"><span class="sidebar-nav-dot" style="background:#c04a3a;"></span>负面</li>
+        </ul>
+      </div>
+      <div class="sidebar-nav-placeholder">
+        过滤功能正在开发中。
+      </div>
+    </aside>
+
+    <!-- CENTER: 工作区 + 搜索 -->
+    <section class="engine-workspace">
+      <div class="engine-workspace-header">
+        <span class="section-title">Query Engine 工作区</span>
+        <span class="section-kicker">Workspace</span>
+      </div>
+      <!-- Search bar specific to query page -->
+      <div class="query-search-bar">
+        <input type="text" class="query-search-input" id="querySearchInput" placeholder="检而索之——输入议题、事件或关键词…">
+        <button class="query-search-btn" id="querySearchBtn">检而索之</button>
+        <label class="query-search-btn" style="cursor:pointer;" title="上传模板">
+          援为佐证
+          <input type="file" accept=".md,.txt" id="queryTemplateInput" style="display:none">
+        </label>
+      </div>
+      <div class="engine-workspace-body" id="workspaceBody">
+        <div class="engine-placeholder" id="enginePlaceholder">
+          <img src="/assets/svg/icon-query-search.svg" alt="" style="width:48px;height:48px;opacity:0.4;">
+          <div class="engine-placeholder-title">检索引擎未运行</div>
+          <div class="engine-placeholder-text">请在系统配置中完成设置，然后从总览页启动分析，检索引擎将自动接收查询并开始搜索。</div>
+          <span class="engine-placeholder-badge">状态：<span id="engineStatusText">未运行</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: 详情预览 -->
+    <aside class="engine-panel">
+      <div class="engine-panel-header">
+        <span class="section-title">详情预览</span>
+        <span class="section-kicker">Detail</span>
+      </div>
+      <div class="engine-panel-body">
+        <div class="summary-card">
+          <div class="summary-card-title">来源可信度</div>
+          <div class="summary-card-value">—</div>
+          <div class="summary-card-note">选中结果后显示来源评级。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-title">相关事件</div>
+          <div class="summary-card-note">选中结果后显示相关事件列表。</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-title">快捷操作</div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">
+            <button class="panel-btn" disabled>援为佐证</button>
+            <button class="panel-btn" disabled>归入卷宗</button>
+            <button class="panel-btn" disabled>追其原帖</button>
+          </div>
+        </div>
+        <div class="summary-placeholder">
+          选中搜索结果后，详情与快捷操作将在此激活。
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- CONSOLE -->
+  <div class="engine-console">
+    <div class="console-header">
+      <span class="console-title">Query Engine · 控制台纪要</span>
+      <span class="console-status" id="connectionStatus">连接中...</span>
+    </div>
+    <div class="console-output" id="engineConsole"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <img class="footer-mountain-left" src="/assets/svg/footer-mountain-left.svg" alt="" loading="lazy" decoding="async">
+    <img class="footer-mountain-right" src="/assets/svg/footer-mountain-right-boat.svg" alt="" loading="lazy" decoding="async">
+    <div class="footer-center">
+      <div class="footer-brand" style="font:15px/1 'STKaiti','KaiTi','楷体',serif;letter-spacing:6px;color:rgba(100,78,58,0.75);">
+        <span>以 微 知 著 · 以 舆 定 策</span>
+        <span style="margin-left:8px;color:#8B1A1A;border:1px solid #8B1A1A;font-size:11px;letter-spacing:0;padding:2px 3px;font-family:'STSong','SimSun',serif;">维</span>
+      </div>
+      <div class="footer-right">
+        <span id="connectionStatus">连接中...</span>
+        <span id="systemTime"></span>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-wrap -->
+
+<!-- SHUTDOWN CONFIRM -->
+<div class="confirm-overlay" id="shutdownConfirmModal" aria-hidden="true">
+  <div class="confirm-dialog danger">
+    <div class="confirm-header">
+      <div class="confirm-title" id="shutdownStrongText">确定要关闭系统吗？</div>
+      <button class="confirm-close" id="closeShutdownConfirm" aria-label="关闭">×</button>
+    </div>
+    <div class="confirm-body">
+      <div class="confirm-text">
+        <div class="confirm-subtext">将关闭系统并停止所有引擎进程。</div>
+        <div class="confirm-list" id="shutdownPortList"></div>
+      </div>
+    </div>
+    <div class="confirm-actions">
+      <button class="confirm-button" id="cancelShutdownButton">取消</button>
+      <button class="confirm-button danger" id="confirmShutdownButton">立即关闭系统</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIG MODAL -->
+<div class="config-modal-overlay" id="configModal">
+  <div class="config-modal">
+    <div class="config-modal-header">
+      <div class="config-modal-title">LLM 配置 - 与 .env 文件双向同步</div>
+      <div class="config-modal-actions">
+        <button class="config-secondary-button" id="refreshConfigButton">刷新</button>
+        <button class="config-close-button" id="closeConfigModal" aria-label="关闭配置窗口">×</button>
+      </div>
+    </div>
+    <div class="config-modal-body" id="configFormContainer"></div>
+    <div class="config-modal-footer">
+      <div class="config-status-message" id="configStatusMessage"></div>
+      <div class="config-modal-footer-actions">
+        <button class="config-save-button" id="saveConfigButton">保存</button>
+        <button class="config-start-button" id="startSystemButton">保存并启动系统</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="message" id="message"></div>
+
+<script src="/static/engine-shared.js"></script>
+<script>
+const ENGINE_NAME = 'query';
+const ENGINE_PORT = 8503;
+let engineIframe = null;
+
+function updateWorkspace(query) {
+  const running = appStatus[ENGINE_NAME] === 'running';
+  const placeholder = document.getElementById('enginePlaceholder');
+  const statusText = document.getElementById('engineStatusText');
+  const workspaceBody = document.getElementById('workspaceBody');
+  if (statusText) statusText.textContent = running ? '运行中' : (appStatus[ENGINE_NAME] === 'starting' ? '启动中' : '未运行');
+  if (running) {
+    if (placeholder) placeholder.style.display = 'none';
+    if (!engineIframe) {
+      engineIframe = document.createElement('iframe');
+      engineIframe.className = 'engine-iframe';
+      workspaceBody.appendChild(engineIframe);
+    }
+    if (engineIframe) {
+      if (query) {
+        const url = 'http://' + window.location.hostname + ':' + ENGINE_PORT + '?query=' + encodeURIComponent(query) + '&auto_search=true';
+        if (engineIframe.src !== url) engineIframe.src = url;
+      } else if (!engineIframe.src || engineIframe.src === 'about:blank') {
+        engineIframe.src = 'http://' + window.location.hostname + ':' + ENGINE_PORT;
+      }
+      engineIframe.style.display = 'block';
+    }
+  } else {
+    if (placeholder) placeholder.style.display = '';
+    if (engineIframe) engineIframe.style.display = 'none';
+  }
+}
+
+function performQuery() {
+  const input = document.getElementById('querySearchInput');
+  const q = input ? input.value.trim() : '';
+  if (!q) { showMessage('请输入检索内容', 'error'); return; }
+  if (appStatus[ENGINE_NAME] !== 'running') { showMessage('检索引擎未运行，请先启动系统', 'error'); return; }
+  updateWorkspace(q);
+  showMessage('检索请求已发送', 'success');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  initUtilityMenu();
+  bindSharedListeners();
+  initEngineSocket(ENGINE_NAME);
+  ensureSystemReady();
+  updateTime();
+  setInterval(updateTime, 1000);
+  checkStatus();
+  setInterval(checkStatus, 10000);
+  startConnectionProbe();
+
+  fetch('/api/output/' + ENGINE_NAME).then(r => r.json()).then(data => { if (data.success && data.output) data.output.forEach(line => appendLog(line)); }).catch(() => {});
+  setInterval(function () { checkStatus(); updateWorkspace(); }, 5000);
+
+  const searchBtn = document.getElementById('querySearchBtn');
+  if (searchBtn) searchBtn.addEventListener('click', performQuery);
+  const searchInput = document.getElementById('querySearchInput');
+  if (searchInput) searchInput.addEventListener('keypress', function (e) { if (e.key === 'Enter') performQuery(); });
+});
+
+const _origUpdateAppStatus = updateAppStatus;
+function updateAppStatus(data) { _origUpdateAppStatus(data); updateWorkspace(); }
+</script>
+</body>
+</html>

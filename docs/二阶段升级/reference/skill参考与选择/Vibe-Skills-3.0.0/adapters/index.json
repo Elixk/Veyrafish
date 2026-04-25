@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "default_adapter_id": "codex",
+  "aliases": {
+    "claude": "claude-code"
+  },
+  "adapters": [
+    {
+      "id": "codex",
+      "status": "supported-with-constraints",
+      "install_mode": "governed",
+      "check_mode": "governed",
+      "bootstrap_mode": "governed",
+      "bootstrap_summary": "strongest governed lane",
+      "default_target_root": {
+        "env": "CODEX_HOME",
+        "rel": ".codex",
+        "kind": "host-home"
+      },
+      "host_profile": "adapters/codex/host-profile.json",
+      "settings_map": "adapters/codex/settings-map.json",
+      "closure": "adapters/codex/closure.json",
+      "manifest": "dist/host-codex/manifest.json"
+    },
+    {
+      "id": "claude-code",
+      "status": "supported-with-constraints",
+      "install_mode": "preview-guidance",
+      "check_mode": "preview-guidance",
+      "bootstrap_mode": "preview-guidance",
+      "bootstrap_summary": "supported install/use path",
+      "default_target_root": {
+        "env": "CLAUDE_HOME",
+        "rel": ".claude",
+        "kind": "host-home"
+      },
+      "host_profile": "adapters/claude-code/host-profile.json",
+      "settings_map": "adapters/claude-code/settings-map.json",
+      "closure": "adapters/claude-code/closure.json",
+      "manifest": "dist/host-claude-code/manifest.json"
+    },
+    {
+      "id": "cursor",
+      "status": "preview",
+      "install_mode": "preview-guidance",
+      "check_mode": "preview-guidance",
+      "bootstrap_mode": "preview-guidance",
+      "bootstrap_summary": "supported install/use path",
+      "default_target_root": {
+        "env": "CURSOR_HOME",
+        "rel": ".cursor",
+        "kind": "host-home"
+      },
+      "host_profile": "adapters/cursor/host-profile.json",
+      "settings_map": "adapters/cursor/settings-map.json",
+      "closure": "adapters/cursor/closure.json",
+      "manifest": "dist/host-cursor/manifest.json"
+    },
+    {
+      "id": "windsurf",
+      "status": "preview",
+      "install_mode": "runtime-core",
+      "check_mode": "runtime-core",
+      "bootstrap_mode": "runtime-core",
+      "bootstrap_summary": "supported path + runtime adapter",
+      "default_target_root": {
+        "env": "WINDSURF_HOME",
+        "rel": ".codeium/windsurf",
+        "kind": "host-home"
+      },
+      "host_profile": "adapters/windsurf/host-profile.json",
+      "settings_map": "adapters/windsurf/settings-map.json",
+      "closure": "adapters/windsurf/closure.json",
+      "manifest": "dist/host-windsurf/manifest.json"
+    },
+    {
+      "id": "openclaw",
+      "status": "preview",
+      "install_mode": "runtime-core",
+      "check_mode": "runtime-core",
+      "bootstrap_mode": "runtime-core",
+      "bootstrap_summary": "preview runtime-core adapter",
+      "default_target_root": {
+        "env": "OPENCLAW_HOME",
+        "rel": ".openclaw",
+        "kind": "host-home"
+      },
+      "host_profile": "adapters/openclaw/host-profile.json",
+      "settings_map": "adapters/openclaw/settings-map.json",
+      "closure": "adapters/openclaw/closure.json",
+      "manifest": "dist/host-openclaw/manifest.json"
+    },
+    {
+      "id": "opencode",
+      "status": "preview",
+      "install_mode": "preview-guidance",
+      "check_mode": "preview-guidance",
+      "bootstrap_mode": "preview-guidance",
+      "bootstrap_summary": "preview guidance adapter",
+      "default_target_root": {
+        "env": "OPENCODE_HOME",
+        "rel": ".config/opencode",
+        "kind": "host-home"
+      },
+      "host_profile": "adapters/opencode/host-profile.json",
+      "settings_map": "adapters/opencode/settings-map.json",
+      "closure": "adapters/opencode/closure.json",
+      "manifest": "dist/host-opencode/manifest.json"
+    }
+  ]
+}

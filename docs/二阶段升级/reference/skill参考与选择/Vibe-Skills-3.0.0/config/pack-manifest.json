@@ -1,0 +1,2764 @@
+{
+    "version": 1,
+    "updated": "2026-04-16",
+    "legacy_matrix_fallback": true,
+    "packs": [
+        {
+            "id": "orchestration-core",
+            "priority": 100,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "review",
+                "debug",
+                "research"
+            ],
+            "trigger_keywords": [
+                "vibe",
+                "orchestrate",
+                "workflow",
+                "plan",
+                "brainstorm",
+                "spec",
+                "subagent",
+                "migration",
+                "governance",
+                "rollout",
+                "runbook",
+                "wave",
+                "cross-module",
+                "编排",
+                "工作流",
+                "规划",
+                "计划",
+                "方案",
+                "迁移",
+                "治理",
+                "发布推进",
+                "运行手册",
+                "波次",
+                "跨模块",
+                "子代理",
+                "多代理",
+                "路由"
+            ],
+            "skill_candidates": [
+                "autonomous-builder",
+                "brainstorming",
+                "cancel-ralph",
+                "claude-skills",
+                "context-fundamentals",
+                "context-hunter",
+                "create-plan",
+                "dialectic",
+                "hive-mind-advanced",
+                "local-vco-roles",
+                "planning-with-files",
+                "ralph-loop",
+                "speckit-analyze",
+                "speckit-checklist",
+                "speckit-clarify",
+                "speckit-constitution",
+                "speckit-implement",
+                "speckit-plan",
+                "speckit-specify",
+                "speckit-tasks",
+                "speckit-taskstoissues",
+                "spec-kit-vibe-compat",
+                "subagent-driven-development",
+                "superclaude-framework-compat",
+                "think-harder",
+                "vibe",
+                "writing-plans"
+            ],
+            "defaults_by_task": {
+                "debug": "think-harder",
+                "planning": "writing-plans",
+                "research": "claude-skills",
+                "coding": "autonomous-builder",
+                "review": "vibe"
+            }
+        },
+        {
+            "id": "aios-core",
+            "priority": 96,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "review",
+                "debug",
+                "research"
+            ],
+            "trigger_keywords": [
+                "aios",
+                "aios-core",
+                "synkra",
+                "agentic agile",
+                "prd",
+                "user story",
+                "scrum master",
+                "product owner",
+                "quality gate",
+                "敏捷智能体",
+                "用户故事",
+                "产品负责人",
+                "质量门禁"
+            ],
+            "skill_candidates": [
+                "aios-analyst",
+                "aios-architect",
+                "aios-data-engineer",
+                "aios-dev",
+                "aios-devops",
+                "aios-master",
+                "aios-pm",
+                "aios-po",
+                "aios-qa",
+                "aios-sm",
+                "aios-squad-creator",
+                "aios-ux-design-expert"
+            ],
+            "defaults_by_task": {
+                "debug": "aios-devops",
+                "planning": "aios-pm",
+                "research": "aios-analyst",
+                "coding": "aios-dev",
+                "review": "aios-qa"
+            }
+        },
+        {
+            "id": "code-quality",
+            "priority": 95,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "coding",
+                "review",
+                "debug"
+            ],
+            "trigger_keywords": [
+                "code review",
+                "lint",
+                "test",
+                "debug",
+                "fix",
+                "quality",
+                "security",
+                "代码审查",
+                "代码评审",
+                "测试",
+                "调试",
+                "修复",
+                "质量",
+                "安全检查",
+                "静态检查",
+                "review",
+                "maintainability",
+                "maintainable",
+                "bug",
+                "bugs",
+                "change review",
+                "code change"
+            ],
+            "skill_candidates": [
+                "build-error-resolver",
+                "code-review",
+                "code-reviewer",
+                "code-review-excellence",
+                "debugging-strategies",
+                "deslop",
+                "error-resolver",
+                "generating-test-reports",
+                "receiving-code-review",
+                "requesting-code-review",
+                "reviewing-code",
+                "security-reviewer",
+                "systematic-debugging",
+                "tdd-guide",
+                "verification-before-completion",
+                "windows-hook-debugging"
+            ],
+            "defaults_by_task": {
+                "debug": "systematic-debugging",
+                "coding": "tdd-guide",
+                "review": "code-reviewer"
+            }
+        },
+        {
+            "id": "science-literature-citations",
+            "priority": 92,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "review",
+                "research"
+            ],
+            "trigger_keywords": [
+                "pubmed",
+                "pmid",
+                "mesh",
+                "medline",
+                "ncbi",
+                "zotero",
+                "bibtex",
+                "citation",
+                "references",
+                "bibliography",
+                "openalex",
+                "biorxiv",
+                "systematic review",
+                "meta-analysis",
+                "文献",
+                "参考文献",
+                "引用",
+                "文献管理",
+                "系统综述",
+                "荟萃分析",
+                "预印本"
+            ],
+            "skill_candidates": [
+                "pubmed-database",
+                "openalex-database",
+                "biorxiv-database",
+                "bgpt-paper-search",
+                "paper-2-web",
+                "open-notebook",
+                "pyzotero",
+                "citation-management",
+                "literature-review",
+                "peer-review",
+                "scholar-evaluation",
+                "scientific-critical-thinking"
+            ],
+            "defaults_by_task": {
+                "planning": "literature-review",
+                "coding": "pubmed-database",
+                "review": "peer-review",
+                "research": "pubmed-database"
+            }
+        },
+        {
+            "id": "ruc-nlpir-augmentation",
+            "priority": 91,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "review",
+                "debug",
+                "research"
+            ],
+            "trigger_keywords": [
+                "flashrag",
+                "webthinker",
+                "deepagent",
+                "ruc-nlpir",
+                "evidence plane",
+                "deep research",
+                "trace.jsonl",
+                "sources.json",
+                "toolchain",
+                "skill chain",
+                "memory folding",
+                "证据平面",
+                "深度调研",
+                "工具链",
+                "技能链",
+                "记忆折叠",
+                "可审计"
+            ],
+            "skill_candidates": [
+                "flashrag-evidence",
+                "webthinker-deep-research",
+                "deepagent-toolchain-plan",
+                "deepagent-memory-fold"
+            ],
+            "defaults_by_task": {
+                "planning": "deepagent-toolchain-plan",
+                "review": "flashrag-evidence",
+                "debug": "flashrag-evidence",
+                "research": "webthinker-deep-research"
+            }
+        },
+        {
+            "id": "science-peer-review",
+            "priority": 96,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "review",
+                "research"
+            ],
+            "trigger_keywords": [
+                "peer review",
+                "审稿"
+            ],
+            "skill_candidates": [
+                "peer-review",
+                "review-response",
+                "scientific-critical-thinking",
+                "scholar-evaluation"
+            ],
+            "defaults_by_task": {
+                "planning": "scientific-critical-thinking",
+                "review": "peer-review",
+                "research": "peer-review"
+            }
+        },
+        {
+            "id": "science-chem-drug",
+            "priority": 91,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "chembl",
+                "drugbank",
+                "pubchem",
+                "brenda",
+                "hmdb",
+                "zinc",
+                "smiles",
+                "inchi",
+                "admet",
+                "ic50",
+                "ki",
+                "kd",
+                "docking",
+                "virtual screening",
+                "ligand",
+                "molecule",
+                "cheminformatics",
+                "药化",
+                "化合物",
+                "小分子",
+                "分子对接",
+                "虚拟筛选"
+            ],
+            "skill_candidates": [
+                "chembl-database",
+                "drugbank-database",
+                "pubchem-database",
+                "brenda-database",
+                "hmdb-database",
+                "zinc-database",
+                "datamol",
+                "deepchem",
+                "medchem",
+                "rdkit",
+                "diffdock",
+                "molfeat",
+                "pytdc"
+            ],
+            "defaults_by_task": {
+                "planning": "medchem",
+                "coding": "rdkit",
+                "research": "chembl-database"
+            }
+        },
+        {
+            "id": "data-ml",
+            "priority": 90,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "review",
+                "research"
+            ],
+            "trigger_keywords": [
+                "machine learning",
+                "model",
+                "dataset",
+                "regression",
+                "classification",
+                "clustering",
+                "feature",
+                "training",
+                "机器学习",
+                "模型",
+                "数据集",
+                "回归",
+                "分类",
+                "聚类",
+                "特征工程",
+                "训练",
+                "预测",
+                "评估",
+                "降维",
+                "可解释性",
+                "机器学习可视化",
+                "cuda kernel",
+                "gpu kernel",
+                "ptx",
+                "wmma",
+                "tensor core",
+                "cuda优化",
+                "gpu优化",
+                "核函数优化",
+                "共享内存优化",
+                "occupancy"
+            ],
+            "skill_candidates": [
+                "aeon",
+                "anomaly-detector",
+                "confusion-matrix-generator",
+                "correlation-analyzer",
+                "creating-data-visualizations",
+                "data-exploration-visualization",
+                "data-normalization-tool",
+                "data-quality-checker",
+                "engineering-features-for-machine-learning",
+                "evaluating-machine-learning-models",
+                "exploratory-data-analysis",
+                "feature-importance-analyzer",
+                "ml-data-leakage-guard",
+                "ml-pipeline-workflow",
+                "preprocessing-data-with-automated-pipelines",
+                "regression-analysis-helper",
+                "running-clustering-algorithms",
+                "scikit-learn",
+                "shap",
+                "statistical-analysis",
+                "statsmodels",
+                "training-machine-learning-models",
+                "umap-learn"
+            ],
+            "defaults_by_task": {
+                "planning": "ml-pipeline-workflow",
+                "research": "scikit-learn",
+                "coding": "scikit-learn",
+                "review": "evaluating-machine-learning-models"
+            }
+        },
+        {
+            "id": "science-clinical-regulatory",
+            "priority": 89,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "clinicaltrials",
+                "nct",
+                "trial phase",
+                "eligibility",
+                "fda",
+                "drug label",
+                "guideline",
+                "pharmacogenomics",
+                "cpic",
+                "临床试验",
+                "入排标准",
+                "试验阶段",
+                "药品说明书",
+                "用药指南",
+                "药物基因组",
+                "治疗方案",
+                "iso 13485"
+            ],
+            "skill_candidates": [
+                "clinicaltrials-database",
+                "fda-database",
+                "clinpgx-database",
+                "clinical-reports",
+                "treatment-plans",
+                "iso-13485-certification",
+                "clinical-decision-support"
+            ],
+            "defaults_by_task": {
+                "planning": "clinical-decision-support",
+                "coding": "clinicaltrials-database",
+                "research": "clinicaltrials-database"
+            }
+        },
+        {
+            "id": "bio-science",
+            "priority": 88,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "bioinformatics",
+                "genomics",
+                "protein",
+                "rna",
+                "single-cell",
+                "pathway",
+                "sequencing",
+                "生物信息",
+                "基因组",
+                "蛋白",
+                "dna",
+                "单细胞",
+                "通路",
+                "测序",
+                "变异",
+                "转录组",
+                "差异表达",
+                "bam",
+                "vcf",
+                "覆盖度"
+            ],
+            "skill_candidates": [
+                "alphafold-database",
+                "anndata",
+                "biopython",
+                "bioservices",
+                "cellxgene-census",
+                "clinvar-database",
+                "cosmic-database",
+                "deeptools",
+                "ensembl-database",
+                "gene-database",
+                "gget",
+                "gwas-database",
+                "kegg-database",
+                "opentargets-database",
+                "pdb-database",
+                "pydeseq2",
+                "pysam",
+                "reactome-database",
+                "scanpy",
+                "scvi-tools",
+                "arboreto",
+                "cobrapy",
+                "esm",
+                "flowio",
+                "geniml",
+                "string-database"
+            ],
+            "defaults_by_task": {
+                "planning": "biopython",
+                "coding": "biopython",
+                "research": "scanpy"
+            }
+        },
+        {
+            "id": "science-medical-imaging",
+            "priority": 87,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "dicom",
+                "pydicom",
+                "radiology",
+                "pathology",
+                "wsi",
+                "whole slide",
+                "imaging data commons",
+                "omero",
+                "ct",
+                "mri",
+                "影像",
+                "医学影像",
+                "dicom文件",
+                "病理切片",
+                "全视野切片",
+                "数字病理"
+            ],
+            "skill_candidates": [
+                "pydicom",
+                "imaging-data-commons",
+                "histolab",
+                "omero-integration",
+                "pathml"
+            ],
+            "defaults_by_task": {
+                "planning": "pathml",
+                "coding": "pydicom",
+                "research": "imaging-data-commons"
+            }
+        },
+        {
+            "id": "science-lab-automation",
+            "priority": 86,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "opentrons",
+                "ot-2",
+                "protocols.io",
+                "benchling",
+                "labarchive",
+                "latchbio",
+                "liquid handling",
+                "pipetting",
+                "lims",
+                "实验室自动化",
+                "液体处理",
+                "移液",
+                "移液机器人",
+                "实验协议"
+            ],
+            "skill_candidates": [
+                "opentrons-integration",
+                "pylabrobot",
+                "protocolsio-integration",
+                "benchling-integration",
+                "labarchive-integration",
+                "latchbio-integration",
+                "ginkgo-cloud-lab"
+            ],
+            "defaults_by_task": {
+                "planning": "protocolsio-integration",
+                "coding": "opentrons-integration",
+                "research": "protocolsio-integration"
+            }
+        },
+        {
+            "id": "science-communication-slides",
+            "priority": 85,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "slides",
+                "slide deck",
+                "ppt",
+                "pptx",
+                "powerpoint",
+                "poster",
+                "infographic",
+                "mermaid",
+                "diagram",
+                "flowchart",
+                "slidev",
+                "marp",
+                "reveal.js",
+                "幻灯片",
+                "演示文稿",
+                "海报",
+                "信息图",
+                "流程图",
+                "示意图"
+            ],
+            "skill_candidates": [
+                "scientific-slides",
+                "slides-as-code",
+                "pptx-posters",
+                "infographics",
+                "markdown-mermaid-writing",
+                "markitdown",
+                "document-skills",
+                "generate-image"
+            ],
+            "defaults_by_task": {
+                "planning": "scientific-slides",
+                "coding": "markdown-mermaid-writing",
+                "research": "infographics"
+            }
+        },
+        {
+            "id": "web-scraping",
+            "priority": 86,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "coding",
+                "research",
+                "debug"
+            ],
+            "trigger_keywords": [
+                "scrapling",
+                "scrape",
+                "scraping",
+                "web scraping",
+                "scraper",
+                "crawl",
+                "crawler",
+                "spider",
+                "html parse",
+                "parse html",
+                "css selector",
+                "xpath",
+                "cloudflare",
+                "turnstile",
+                "captcha",
+                "anti-bot",
+                "headless browser",
+                "爬虫",
+                "抓取",
+                "采集",
+                "网页抓取",
+                "网页采集",
+                "反爬",
+                "验证码",
+                "无头浏览器",
+                "解析html",
+                "选择器"
+            ],
+            "skill_candidates": [
+                "scrapling",
+                "playwright"
+            ],
+            "defaults_by_task": {
+                "coding": "scrapling",
+                "research": "scrapling",
+                "debug": "playwright"
+            }
+        },
+        {
+            "id": "docs-media",
+            "priority": 85,
+            "grade_allow": [
+                "M",
+                "L"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "review",
+                "research"
+            ],
+            "trigger_keywords": [
+                "document",
+                "docx",
+                "pdf",
+                "spreadsheet",
+                "excel",
+                "speech",
+                "transcribe",
+                "文档",
+                "说明文档",
+                "表格",
+                "电子表格",
+                "xlsx",
+                "语音",
+                "转录",
+                "截图",
+                "录音",
+                "会议录音",
+                "说话人",
+                "文字转录",
+                "批注",
+                "回复批注",
+                "word批注",
+                "评论线程",
+                "comments.xml",
+                "commentsextended.xml"
+            ],
+            "skill_candidates": [
+                "content-research-writer",
+                "doc",
+                "docs-review",
+                "docs-write",
+                "docx",
+                "docx-comment-reply",
+                "excel-analysis",
+                "imagegen",
+                "jupyter-notebook",
+                "pdf",
+                "screenshot",
+                "speech",
+                "spreadsheet",
+                "transcribe",
+                "writing-docs",
+                "xlsx",
+                "xan"
+            ],
+            "defaults_by_task": {
+                "planning": "docs-write",
+                "coding": "spreadsheet",
+                "review": "docs-review",
+                "research": "content-research-writer"
+            }
+        },
+        {
+            "id": "media-video",
+            "priority": 86,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "debug",
+                "research"
+            ],
+            "trigger_keywords": [
+                "video",
+                "videos",
+                "video editing",
+                "edit video",
+                "clip",
+                "clips",
+                "highlight reel",
+                "b-roll",
+                "subtitle",
+                "subtitles",
+                "caption",
+                "captions",
+                "transition",
+                "transitions",
+                "fade",
+                "montage",
+                "ffmpeg",
+                "ffprobe",
+                "remotion",
+                "capcut",
+                "剪映",
+                "视频",
+                "做视频",
+                "视频制作",
+                "视频剪辑",
+                "剪辑",
+                "混剪",
+                "字幕",
+                "转场",
+                "片头",
+                "片尾",
+                "配音",
+                "口播",
+                "bgm",
+                "去静音",
+                "去掉静音",
+                "音量标准化",
+                "画面节奏",
+                "jumpcut",
+                "jump cut",
+                "jump-cut",
+                "remove silence",
+                "silence removal",
+                "silencedetect",
+                "srt",
+                "burn subtitles",
+                "去停顿",
+                "剪掉停顿",
+                "口播剪辑"
+            ],
+            "skill_candidates": [
+                "video-studio"
+            ],
+            "defaults_by_task": {
+                "planning": "video-studio",
+                "coding": "video-studio",
+                "debug": "video-studio",
+                "research": "video-studio"
+            }
+        },
+        {
+            "id": "docs-markitdown-conversion",
+            "priority": 94,
+            "grade_allow": [
+                "M",
+                "L"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "markitdown",
+                "convert to markdown",
+                "pdf to markdown",
+                "docx to markdown",
+                "转成 markdown",
+                "转成markdown",
+                "markdown转换"
+            ],
+            "skill_candidates": [
+                "markitdown"
+            ],
+            "defaults_by_task": {
+                "planning": "markitdown",
+                "coding": "markitdown",
+                "research": "markitdown"
+            }
+        },
+        {
+            "id": "finance-edgar-macro",
+            "priority": 84,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "edgar",
+                "sec",
+                "10-k",
+                "10q",
+                "13f",
+                "alpha vantage",
+                "fred",
+                "treasury",
+                "us fiscal",
+                "ofr",
+                "hedge fund",
+                "财报",
+                "美国证监会",
+                "宏观数据",
+                "国债",
+                "财政数据",
+                "fomc"
+            ],
+            "skill_candidates": [
+                "edgartools",
+                "alpha-vantage",
+                "fred-economic-data",
+                "usfiscaldata",
+                "hedgefundmonitor",
+                "market-research-reports",
+                "datacommons-client"
+            ],
+            "defaults_by_task": {
+                "planning": "market-research-reports",
+                "coding": "edgartools",
+                "research": "edgartools"
+            }
+        },
+        {
+            "id": "integration-devops",
+            "priority": 83,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "debug",
+                "review"
+            ],
+            "trigger_keywords": [
+                "deploy",
+                "github",
+                "ci",
+                "cd",
+                "mcp",
+                "sentry",
+                "vercel",
+                "netlify",
+                "node zombie",
+                "zombie node",
+                "orphan node",
+                "devops",
+                "部署",
+                "发布",
+                "运维",
+                "流水线",
+                "持续集成",
+                "持续交付",
+                "故障排查",
+                "僵尸node",
+                "僵尸进程",
+                "威胁建模",
+                "github actions",
+                "日志排查",
+                "线上告警"
+            ],
+            "skill_candidates": [
+                "gh-address-comments",
+                "gh-fix-ci",
+                "mcp-integration",
+                "netlify-deploy",
+                "node-zombie-guardian",
+                "performance-testing",
+                "security-best-practices",
+                "security-ownership-map",
+                "security-threat-model",
+                "sentry",
+                "smart-file-writer",
+                "vercel-deploy",
+                "yeet"
+            ],
+            "defaults_by_task": {
+                "debug": "gh-fix-ci",
+                "planning": "mcp-integration",
+                "coding": "vercel-deploy",
+                "review": "security-best-practices"
+            }
+        },
+        {
+            "id": "ai-llm",
+            "priority": 85,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research",
+                "review"
+            ],
+            "trigger_keywords": [
+                "llm",
+                "prompt",
+                "prompts.chat",
+                "openai",
+                "model eval",
+                "rag",
+                "embedding",
+                "agent",
+                "大模型",
+                "提示词",
+                "system prompt",
+                "模型评测",
+                "向量检索",
+                "嵌入",
+                "智能体",
+                "推理优化",
+                "微调",
+                "responses api",
+                "openai文档",
+                "提示词模板",
+                "vector search",
+                "semantic retrieval",
+                "chunking",
+                "embedding策略",
+                "分块",
+                "向量搜索",
+                "embedding pipeline",
+                "improve prompt",
+                "optimize prompt",
+                "提示词优化",
+                "改进提示词"
+            ],
+            "skill_candidates": [
+                "documentation-lookup",
+                "embedding-strategies",
+                "evaluating-code-models",
+                "evaluating-llms-harness",
+                "nowait-reasoning-optimizer",
+                "openai-docs",
+                "openai-knowledge",
+                "prompt-lookup",
+                "similarity-search-patterns",
+                "transformer-lens-interpretability",
+                "transformers"
+            ],
+            "defaults_by_task": {
+                "planning": "embedding-strategies",
+                "review": "evaluating-llms-harness",
+                "coding": "documentation-lookup",
+                "research": "openai-docs"
+            }
+        },
+        {
+            "id": "science-quantum",
+            "priority": 82,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "qiskit",
+                "cirq",
+                "pennylane",
+                "qutip",
+                "quantum",
+                "量子",
+                "量子计算",
+                "量子电路"
+            ],
+            "skill_candidates": [
+                "qiskit",
+                "cirq",
+                "pennylane",
+                "qutip"
+            ],
+            "defaults_by_task": {
+                "planning": "qiskit",
+                "coding": "qiskit",
+                "research": "qiskit"
+            }
+        },
+        {
+            "id": "ip-uspto-patents",
+            "priority": 84,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "uspto",
+                "patent",
+                "patents",
+                "专利",
+                "专利检索"
+            ],
+            "skill_candidates": [
+                "uspto-database"
+            ],
+            "defaults_by_task": {
+                "planning": "uspto-database",
+                "coding": "uspto-database",
+                "research": "uspto-database"
+            }
+        },
+        {
+            "id": "science-astropy",
+            "priority": 81,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "astropy",
+                "astronomy",
+                "fits",
+                "天文",
+                "天球坐标",
+                "赤经",
+                "赤纬"
+            ],
+            "skill_candidates": [
+                "astropy"
+            ],
+            "defaults_by_task": {
+                "planning": "astropy",
+                "coding": "astropy",
+                "research": "astropy"
+            }
+        },
+        {
+            "id": "science-pymatgen",
+            "priority": 81,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "pymatgen",
+                "materials",
+                "crystal",
+                "phase diagram",
+                "材料",
+                "晶体",
+                "相图"
+            ],
+            "skill_candidates": [
+                "pymatgen"
+            ],
+            "defaults_by_task": {
+                "planning": "pymatgen",
+                "coding": "pymatgen",
+                "research": "pymatgen"
+            }
+        },
+        {
+            "id": "science-geospatial",
+            "priority": 80,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "geopandas",
+                "geojson",
+                "shapefile",
+                "gis",
+                "geospatial",
+                "地图",
+                "地理",
+                "经纬度"
+            ],
+            "skill_candidates": [
+                "geopandas",
+                "geo-database",
+                "geomaster"
+            ],
+            "defaults_by_task": {
+                "planning": "geopandas",
+                "coding": "geopandas",
+                "research": "geo-database"
+            }
+        },
+        {
+            "id": "science-tiledbvcf",
+            "priority": 93,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "tiledb-vcf",
+                "tiledb vcf",
+                "tiledbvcf"
+            ],
+            "skill_candidates": [
+                "tiledbvcf"
+            ],
+            "defaults_by_task": {
+                "planning": "tiledbvcf",
+                "coding": "tiledbvcf",
+                "research": "tiledbvcf"
+            }
+        },
+        {
+            "id": "science-simpy-simulation",
+            "priority": 82,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "simpy"
+            ],
+            "skill_candidates": [
+                "simpy"
+            ],
+            "defaults_by_task": {
+                "planning": "simpy",
+                "coding": "simpy",
+                "research": "simpy"
+            }
+        },
+        {
+            "id": "science-fluidsim-cfd",
+            "priority": 81,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "fluidsim"
+            ],
+            "skill_candidates": [
+                "fluidsim"
+            ],
+            "defaults_by_task": {
+                "planning": "fluidsim",
+                "coding": "fluidsim",
+                "research": "fluidsim"
+            }
+        },
+        {
+            "id": "science-matchms-spectra",
+            "priority": 82,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "matchms"
+            ],
+            "skill_candidates": [
+                "matchms"
+            ],
+            "defaults_by_task": {
+                "planning": "matchms",
+                "coding": "matchms",
+                "research": "matchms"
+            }
+        },
+        {
+            "id": "science-matlab-octave",
+            "priority": 80,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "matlab",
+                "octave"
+            ],
+            "skill_candidates": [
+                "matlab"
+            ],
+            "defaults_by_task": {
+                "planning": "matlab",
+                "coding": "matlab",
+                "research": "matlab"
+            }
+        },
+        {
+            "id": "cloud-modalcom",
+            "priority": 60,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "modal.com",
+                "modal labs",
+                "modallabs",
+                "modal run",
+                "modal deploy",
+                "serverless gpu",
+                "batch job",
+                "gpu container"
+            ],
+            "skill_candidates": [
+                "modal-labs"
+            ],
+            "defaults_by_task": {
+                "planning": "modal-labs",
+                "coding": "modal-labs",
+                "research": "modal-labs"
+            }
+        },
+        {
+            "id": "science-neuropixels",
+            "priority": 86,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "neuropixels",
+                "kilosort"
+            ],
+            "skill_candidates": [
+                "neuropixels-analysis"
+            ],
+            "defaults_by_task": {
+                "planning": "neuropixels-analysis",
+                "coding": "neuropixels-analysis",
+                "research": "neuropixels-analysis"
+            }
+        },
+        {
+            "id": "science-pymc-bayesian",
+            "priority": 85,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "pymc"
+            ],
+            "skill_candidates": [
+                "pymc"
+            ],
+            "defaults_by_task": {
+                "planning": "pymc",
+                "coding": "pymc",
+                "research": "pymc"
+            }
+        },
+        {
+            "id": "science-pymoo-optimization",
+            "priority": 85,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "pymoo"
+            ],
+            "skill_candidates": [
+                "pymoo"
+            ],
+            "defaults_by_task": {
+                "planning": "pymoo",
+                "coding": "pymoo",
+                "research": "pymoo"
+            }
+        },
+        {
+            "id": "science-rowan-chemistry",
+            "priority": 82,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "rowan api",
+                "quantum chemistry",
+                "autodock vina",
+                "pka prediction",
+                "geometry optimization",
+                "量子化学",
+                "分子对接"
+            ],
+            "skill_candidates": [
+                "rowan"
+            ],
+            "defaults_by_task": {
+                "planning": "rowan",
+                "coding": "rowan",
+                "research": "rowan"
+            }
+        },
+        {
+            "id": "ml-stable-baselines3",
+            "priority": 84,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "stable-baselines3",
+                "sb3"
+            ],
+            "skill_candidates": [
+                "stable-baselines3"
+            ],
+            "defaults_by_task": {
+                "planning": "stable-baselines3",
+                "coding": "stable-baselines3",
+                "research": "stable-baselines3"
+            }
+        },
+        {
+            "id": "science-timesfm-forecasting",
+            "priority": 84,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "timesfm"
+            ],
+            "skill_candidates": [
+                "timesfm-forecasting"
+            ],
+            "defaults_by_task": {
+                "planning": "timesfm-forecasting",
+                "coding": "timesfm-forecasting",
+                "research": "timesfm-forecasting"
+            }
+        },
+        {
+            "id": "ml-torch-geometric",
+            "priority": 83,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "torch-geometric",
+                "torch_geometric",
+                "pyg",
+                "pytorch geometric"
+            ],
+            "skill_candidates": [
+                "torch-geometric",
+                "torch_geometric"
+            ],
+            "defaults_by_task": {
+                "planning": "torch-geometric",
+                "coding": "torch-geometric",
+                "research": "torch-geometric"
+            }
+        },
+        {
+            "id": "science-zarr-polars",
+            "priority": 80,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "polars",
+                "vaex",
+                "zarr",
+                "tiledb",
+                "tiledbvcf",
+                "parquet"
+            ],
+            "skill_candidates": [
+                "polars",
+                "vaex",
+                "zarr-python",
+                "tiledbvcf"
+            ],
+            "defaults_by_task": {
+                "planning": "zarr-python",
+                "coding": "polars",
+                "research": "vaex"
+            }
+        },
+        {
+            "id": "research-design",
+            "priority": 80,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "research",
+                "review"
+            ],
+            "trigger_keywords": [
+                "research",
+                "hypothesis",
+                "methodology",
+                "experimental design",
+                "literature",
+                "scientific writing",
+                "grant",
+                "grants",
+                "proposal",
+                "proposals",
+                "nsfc",
+                "nsf",
+                "nih",
+                "darpa",
+                "funding",
+                "研究",
+                "假设",
+                "方法学",
+                "实验设计",
+                "文献",
+                "科研写作",
+                "科研基金",
+                "基金申请",
+                "基金申请书",
+                "可视化",
+                "因果分析",
+                "统计建模",
+                "imrad",
+                "科研论文",
+                "论文写作",
+                "准实验"
+            ],
+            "skill_candidates": [
+                "architecture-patterns",
+                "comprehensive-research-agent",
+                "designing-experiments",
+                "experiment-failure-analysis",
+                "figma",
+                "figma-implement-design",
+                "hypogenic",
+                "hypothesis-generation",
+                "hypothesis-testing",
+                "literature-matrix",
+                "performing-causal-analysis",
+                "performing-regression-analysis",
+                "playwright",
+                "property-based-testing",
+                "research-lookup",
+                "research-grants",
+                "scientific-brainstorming",
+                "scientific-data-preprocessing",
+                "skill-creator",
+                "skill-lookup",
+                "ux-researcher-designer",
+                "verification-quality-assurance",
+                "report-generator",
+                "structured-content-storage"
+            ],
+            "defaults_by_task": {
+                "planning": "designing-experiments",
+                "review": "verification-quality-assurance",
+                "research": "research-lookup"
+            }
+        },
+        {
+            "id": "scholarly-publishing-workflow",
+            "priority": 97,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "submission",
+                "rebuttal",
+                "revision",
+                "resubmission",
+                "camera-ready",
+                "proof",
+                "cover letter",
+                "highlights",
+                "graphical abstract",
+                "response to reviewers",
+                "回复审稿意见",
+                "返修",
+                "投稿",
+                "相机就绪",
+                "校样",
+                "latexmk",
+                "overleaf",
+                "latexindent",
+                "chktex"
+            ],
+            "skill_candidates": [
+                "scholarly-publishing",
+                "submission-checklist",
+                "manuscript-as-code",
+                "latex-submission-pipeline",
+                "slides-as-code",
+                "scientific-writing",
+                "scientific-visualization",
+                "scientific-schematics",
+                "venue-templates",
+                "citation-management",
+                "paper-2-web",
+                "latex-posters",
+                "scientific-slides"
+            ],
+            "defaults_by_task": {
+                "planning": "scholarly-publishing",
+                "coding": "latex-submission-pipeline",
+                "research": "scholarly-publishing"
+            }
+        },
+        {
+            "id": "science-figures-visualization",
+            "priority": 91,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "作图",
+                "画图",
+                "科研绘图",
+                "顶刊作图",
+                "投稿图",
+                "figure",
+                "subplot",
+                "multi-panel",
+                "panel",
+                "matplotlib",
+                "seaborn",
+                "plotly",
+                "tiff",
+                "dpi",
+                "600dpi",
+                "vector",
+                "eps",
+                "svg",
+                "colorblind",
+                "色盲",
+                "配色",
+                "误差棒",
+                "显著性"
+            ],
+            "skill_candidates": [
+                "scientific-visualization",
+                "matplotlib",
+                "seaborn",
+                "plotly",
+                "scientific-schematics"
+            ],
+            "defaults_by_task": {
+                "planning": "scientific-visualization",
+                "coding": "scientific-visualization",
+                "research": "scientific-visualization"
+            }
+        },
+        {
+            "id": "science-reporting",
+            "priority": 88,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "科研报告",
+                "技术报告",
+                "项目报告",
+                "实验报告",
+                "分析报告",
+                "html报告",
+                "pdf报告",
+                "执行摘要",
+                "附录",
+                "复现",
+                "technical report",
+                "research report",
+                "analysis report",
+                "executive summary",
+                "appendix",
+                "reproducible",
+                "quarto",
+                "rmarkdown",
+                "whitepaper"
+            ],
+            "skill_candidates": [
+                "scientific-reporting",
+                "scientific-writing",
+                "scientific-visualization",
+                "scientific-schematics",
+                "markdown-mermaid-writing"
+            ],
+            "defaults_by_task": {
+                "planning": "scientific-reporting",
+                "coding": "scientific-reporting",
+                "research": "scientific-reporting"
+            }
+        },
+        {
+            "id": "community-uiux-design",
+            "priority": 84,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "review"
+            ],
+            "trigger_keywords": [
+                "ui ux",
+                "ui/ux",
+                "design system",
+                "landing page",
+                "dashboard ui",
+                "figma to code",
+                "tailwind ui",
+                "界面设计",
+                "设计系统",
+                "落地页设计",
+                "仪表盘界面",
+                "前端视觉"
+            ],
+            "skill_candidates": [
+                "ui-ux-pro-max",
+                "frontend-design",
+                "figma-implement-design",
+                "ux-researcher-designer"
+            ],
+            "defaults_by_task": {
+                "planning": "ui-ux-pro-max",
+                "coding": "ui-ux-pro-max",
+                "review": "ux-researcher-designer"
+            }
+        },
+        {
+            "id": "community-search-aggregation",
+            "priority": 86,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "research",
+                "planning",
+                "review"
+            ],
+            "trigger_keywords": [
+                "ai search hub",
+                "multi platform search",
+                "search aggregation",
+                "cross-platform retrieval",
+                "public web intel",
+                "聚合搜索",
+                "多平台搜索",
+                "全域搜索",
+                "舆情追踪",
+                "热点追踪",
+                "链接抽取",
+                "ai搜索",
+                "AI搜索",
+                "搜索聚合",
+                "多源搜索",
+                "跨平台搜索",
+                "搜索简报",
+                "趋势简报",
+                "舆情简报",
+                "web search aggregation"
+            ],
+            "skill_candidates": [
+                "ai-search-hub",
+                "webthinker-deep-research",
+                "research-lookup",
+                "flashrag-evidence",
+                "perplexity-search"
+            ],
+            "defaults_by_task": {
+                "research": "ai-search-hub",
+                "planning": "ai-search-hub",
+                "review": "flashrag-evidence"
+            }
+        },
+        {
+            "id": "community-ssh-operations",
+            "priority": 84,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "coding",
+                "debug",
+                "review"
+            ],
+            "trigger_keywords": [
+                "ssh",
+                "remote server",
+                "jump host",
+                "server transfer",
+                "batch ssh",
+                "ssh tunnel",
+                "deploy over ssh",
+                "远程服务器",
+                "跳板机",
+                "批量运维",
+                "ssh隧道",
+                "服务器传输",
+                "远程巡检"
+            ],
+            "skill_candidates": [
+                "ssh-skill",
+                "sentry",
+                "gh-fix-ci"
+            ],
+            "defaults_by_task": {
+                "coding": "ssh-skill",
+                "debug": "ssh-skill",
+                "review": "sentry"
+            }
+        },
+        {
+            "id": "community-high-agency",
+            "priority": 80,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "review",
+                "debug",
+                "research"
+            ],
+            "trigger_keywords": [
+                "pua",
+                "pip mode",
+                "high agency",
+                "try harder",
+                "don't give up",
+                "proactive enforcement",
+                "高能动性",
+                "别放弃",
+                "强制推进",
+                "连续失败",
+                "主动排查"
+            ],
+            "skill_candidates": [
+                "pua",
+                "systematic-debugging",
+                "verification-before-completion",
+                "think-harder"
+            ],
+            "defaults_by_task": {
+                "planning": "pua",
+                "coding": "pua",
+                "review": "verification-before-completion",
+                "debug": "pua",
+                "research": "think-harder"
+            }
+        },
+        {
+            "id": "prompt-assets-local",
+            "priority": 88,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research",
+                "review"
+            ],
+            "trigger_keywords": [
+                "local prompt library",
+                "prompt assets",
+                "prompt catalog",
+                "prompt taxonomy",
+                "internal prompts",
+                "本地提示词库",
+                "提示词资产",
+                "提示词目录",
+                "提示词分类",
+                "内部提示词",
+                "prompt-library",
+                "提示词库管理",
+                "整理提示词",
+                "分类提示词",
+                "添加提示词",
+                "管理提示词",
+                "prompt管理",
+                "prompt整理",
+                "prompt分类",
+                "prompt添加",
+                "我的提示词",
+                "维护提示词",
+                "organize prompts",
+                "manage prompts",
+                "add prompt to library",
+                "prompt pack",
+                "prompt collection"
+            ],
+            "skill_candidates": [
+                "prompt-library",
+                "prompt-lookup",
+                "documentation-lookup"
+            ],
+            "defaults_by_task": {
+                "planning": "prompt-library",
+                "research": "prompt-library",
+                "review": "documentation-lookup",
+                "coding": "prompt-library"
+            }
+        },
+        {
+            "id": "community-arxiv-translation",
+            "priority": 97,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "arxiv翻译",
+                "arxiv-translator",
+                "arxiv translator",
+                "翻译论文",
+                "论文翻译",
+                "翻译arXiv",
+                "translate arxiv",
+                "translate paper",
+                "paper translation",
+                "latex翻译",
+                "latex translation",
+                "论文中文版",
+                "中文版论文",
+                "读中文版",
+                "翻译成中文",
+                "论文翻译成中文",
+                "arXiv中文",
+                "中文arXiv",
+                "ChineseXiv",
+                "1706.03762",
+                "2501.12948",
+                "翻译arxiv",
+                "arxiv ID",
+                "translate latex"
+            ],
+            "skill_candidates": [
+                "arxiv-translator",
+                "scientific-writing",
+                "latex-submission-pipeline"
+            ],
+            "defaults_by_task": {
+                "planning": "arxiv-translator",
+                "coding": "arxiv-translator",
+                "research": "arxiv-translator"
+            }
+        },
+        {
+            "id": "community-algorithm-engineering",
+            "priority": 82,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "research"
+            ],
+            "trigger_keywords": [
+                "algorithm engineer",
+                "algorithm engineering",
+                "algorithm design",
+                "optimization modeling",
+                "dualstack algorithm",
+                "python matlab",
+                "matlab python",
+                "scheduling algorithm",
+                "path planning algorithm",
+                "image algorithm",
+                "算法工程",
+                "算法工程师",
+                "算法设计",
+                "算法建模",
+                "双栈算法",
+                "python matlab 双栈",
+                "matlab 算法",
+                "调度算法",
+                "组合优化",
+                "路径规划算法",
+                "避障算法",
+                "图像算法",
+                "深度学习训练脚本",
+                "论文算法复现"
+            ],
+            "skill_candidates": [
+                "algorithm-engineer-dualstack",
+                "scientific-writing",
+                "scikit-learn",
+                "senior-ml-engineer",
+                "math-model-selector"
+            ],
+            "defaults_by_task": {
+                "planning": "algorithm-engineer-dualstack",
+                "coding": "algorithm-engineer-dualstack",
+                "research": "algorithm-engineer-dualstack"
+            }
+        },
+        {
+            "id": "community-invoice-organization",
+            "priority": 81,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "coding",
+                "planning"
+            ],
+            "trigger_keywords": [
+                "invoice organizer",
+                "receipt organizer",
+                "invoice rename",
+                "tax receipts",
+                "expense receipts",
+                "organize invoices",
+                "invoice csv",
+                "invoice summary csv",
+                "发票整理",
+                "收据整理",
+                "票据整理",
+                "报销票据",
+                "税务票据",
+                "发票重命名",
+                "整理发票",
+                "给会计的发票汇总"
+            ],
+            "skill_candidates": [
+                "invoice-organizer",
+                "file-organizer"
+            ],
+            "defaults_by_task": {
+                "coding": "invoice-organizer",
+                "planning": "invoice-organizer"
+            }
+        },
+        {
+            "id": "community-resume-tailoring",
+            "priority": 84,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "writing",
+                "research"
+            ],
+            "trigger_keywords": [
+                "tailored resume",
+                "resume generator",
+                "ats resume",
+                "job description resume",
+                "resume tailoring",
+                "简历定制",
+                "岗位定制简历",
+                "ATS简历",
+                "根据JD改简历",
+                "优化简历",
+                "定制简历",
+                "求职简历"
+            ],
+            "skill_candidates": [
+                "tailored-resume-generator",
+                "scientific-reporting",
+                "writing-plans"
+            ],
+            "defaults_by_task": {
+                "planning": "tailored-resume-generator",
+                "research": "tailored-resume-generator"
+            }
+        },
+        {
+            "id": "community-meeting-insights",
+            "priority": 85,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "research",
+                "review",
+                "planning"
+            ],
+            "trigger_keywords": [
+                "meeting insights",
+                "meeting transcript analysis",
+                "communication patterns",
+                "filler words",
+                "speaking ratio",
+                "facilitation style",
+                "meeting behavior analysis",
+                "communication coaching",
+                "会议分析",
+                "会议转录分析",
+                "沟通模式分析",
+                "口头禅分析",
+                "发言占比",
+                "主持风格分析",
+                "会议沟通复盘"
+            ],
+            "skill_candidates": [
+                "meeting-insights-analyzer",
+                "research-lookup",
+                "scientific-reporting"
+            ],
+            "defaults_by_task": {
+                "research": "meeting-insights-analyzer",
+                "review": "meeting-insights-analyzer",
+                "planning": "meeting-insights-analyzer"
+            }
+        },
+        {
+            "id": "community-langsmith-observability",
+            "priority": 83,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "debug",
+                "review",
+                "research"
+            ],
+            "trigger_keywords": [
+                "langsmith fetch",
+                "langsmith trace",
+                "langchain trace",
+                "langgraph trace",
+                "agent trace debug",
+                "debug my agent",
+                "show me recent traces",
+                "langsmith 调试",
+                "trace 调试",
+                "agent执行轨迹",
+                "查看trace",
+                "langchain 调试",
+                "langgraph 调试"
+            ],
+            "skill_candidates": [
+                "langsmith-fetch",
+                "systematic-debugging",
+                "flashrag-evidence"
+            ],
+            "defaults_by_task": {
+                "debug": "langsmith-fetch",
+                "review": "langsmith-fetch",
+                "research": "langsmith-fetch"
+            }
+        },
+        {
+            "id": "community-claude-scholar-research-ideation",
+            "priority": 86,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "research",
+                "review"
+            ],
+            "trigger_keywords": [
+                "research ideation",
+                "gap analysis",
+                "research proposal",
+                "research question",
+                "start a new research topic",
+                "5w1h",
+                "5w 1h",
+                "选题",
+                "研究选题",
+                "研究空白",
+                "研究问题",
+                "研究计划",
+                "研究立项",
+                "差距分析",
+                "5w1h 框架"
+            ],
+            "skill_candidates": [
+                "research-ideation",
+                "brainstorming",
+                "literature-review",
+                "writing-plans"
+            ],
+            "defaults_by_task": {
+                "planning": "research-ideation",
+                "research": "research-ideation",
+                "review": "research-ideation"
+            }
+        },
+        {
+            "id": "community-claude-scholar-experiment-analysis",
+            "priority": 86,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "research",
+                "review",
+                "planning"
+            ],
+            "trigger_keywords": [
+                "results analysis",
+                "analyze experimental results",
+                "strict statistical analysis",
+                "statistical significance",
+                "effect size",
+                "confidence interval",
+                "ablation analysis",
+                "figure catalog",
+                "stats appendix",
+                "experiment report",
+                "decision-oriented summary",
+                "post-experiment report",
+                "实验结果分析",
+                "严格统计分析",
+                "显著性检验",
+                "效应量",
+                "置信区间",
+                "消融实验",
+                "结果复盘报告",
+                "复盘报告",
+                "实验复盘",
+                "结果复盘",
+                "决策导向",
+                "决策导向总结",
+                "结果总结报告",
+                "实验总结报告",
+                "图表目录"
+            ],
+            "skill_candidates": [
+                "results-analysis",
+                "results-report",
+                "publication-chart-skill",
+                "scientific-reporting",
+                "statistical-analysis"
+            ],
+            "defaults_by_task": {
+                "research": "results-analysis",
+                "review": "results-analysis",
+                "planning": "results-analysis"
+            }
+        },
+        {
+            "id": "community-claude-scholar-paper-writing",
+            "priority": 85,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "research",
+                "review",
+                "planning"
+            ],
+            "trigger_keywords": [
+                "ml paper writing",
+                "paper draft",
+                "related work",
+                "methods section",
+                "citation verification",
+                "claim citation alignment",
+                "writing anti ai",
+                "reduce ai tone",
+                "paper self review",
+                "submission checklist",
+                "rebuttal",
+                "review response",
+                "latex conference template",
+                "poster",
+                "talk",
+                "论文写作",
+                "相关工作",
+                "方法部分",
+                "引用核对",
+                "引用校验",
+                "主张-引用对齐",
+                "降AI味",
+                "论文自查",
+                "投稿自检",
+                "审稿回复",
+                "rebuttal 写作",
+                "会议模板整理",
+                "海报",
+                "报告演讲"
+            ],
+            "skill_candidates": [
+                "ml-paper-writing",
+                "citation-verification",
+                "writing-anti-ai",
+                "paper-self-review",
+                "review-response",
+                "latex-conference-template-organizer",
+                "post-acceptance"
+            ],
+            "defaults_by_task": {
+                "research": "ml-paper-writing",
+                "review": "paper-self-review",
+                "planning": "ml-paper-writing"
+            }
+        },
+        {
+            "id": "community-claude-scholar-rebuttal",
+            "priority": 97,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "review",
+                "research"
+            ],
+            "trigger_keywords": [
+                "rebuttal",
+                "review response",
+                "respond to reviewers",
+                "reviewer rebuttal",
+                "审稿回复",
+                "回复审稿人",
+                "回复审稿意见"
+            ],
+            "skill_candidates": [
+                "review-response",
+                "scientific-critical-thinking"
+            ],
+            "defaults_by_task": {
+                "planning": "review-response",
+                "review": "review-response",
+                "research": "review-response"
+            }
+        },
+        {
+            "id": "community-claude-scholar-obsidian-project-memory",
+            "priority": 85,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "research",
+                "review"
+            ],
+            "trigger_keywords": [
+                "obsidian",
+                "obsidian vault",
+                "project memory",
+                "knowledge base",
+                "sync notes",
+                "daily notes",
+                "literature workflow",
+                "synthesis map",
+                "link graph",
+                "canvas",
+                "项目知识库",
+                "知识库同步",
+                "研究笔记",
+                "实验日志",
+                "每日笔记",
+                "文献笔记",
+                "综述地图",
+                "链接图谱",
+                "Obsidian 仓库",
+                "Obsidian vault",
+                "canvas 视图"
+            ],
+            "skill_candidates": [
+                "obsidian-project-memory",
+                "obsidian-project-bootstrap",
+                "obsidian-project-lifecycle",
+                "obsidian-research-log",
+                "obsidian-experiment-log",
+                "obsidian-literature-workflow",
+                "obsidian-synthesis-map",
+                "obsidian-link-graph",
+                "obsidian-markdown",
+                "obsidian-cli",
+                "obsidian-bases",
+                "json-canvas"
+            ],
+            "defaults_by_task": {
+                "planning": "obsidian-project-memory",
+                "research": "obsidian-project-memory",
+                "review": "obsidian-project-memory"
+            }
+        },
+        {
+            "id": "community-claude-scholar-zotero-obsidian-bridge",
+            "priority": 85,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "research",
+                "review"
+            ],
+            "trigger_keywords": [
+                "zotero obsidian",
+                "zotero obsidian bridge",
+                "paper notes",
+                "paper note schema",
+                "collection inventory",
+                "zotero collection",
+                "zotero 笔记",
+                "zotero 同步 obsidian",
+                "论文笔记 schema",
+                "collection 清单",
+                "Zotero collection 盘点"
+            ],
+            "skill_candidates": [
+                "zotero-obsidian-bridge",
+                "obsidian-literature-workflow",
+                "citation-management",
+                "pyzotero"
+            ],
+            "defaults_by_task": {
+                "planning": "zotero-obsidian-bridge",
+                "research": "zotero-obsidian-bridge",
+                "review": "zotero-obsidian-bridge"
+            }
+        },
+        {
+            "id": "community-claude-scholar-engineering-workflow",
+            "priority": 84,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "coding",
+                "debug",
+                "review"
+            ],
+            "trigger_keywords": [
+                "git workflow",
+                "conventional commits",
+                "branch strategy",
+                "uv package manager",
+                "uv sync",
+                "pyproject.toml",
+                "daily coding",
+                "architecture design",
+                "ml project structure",
+                "bug detective",
+                "verification loop",
+                "web design review",
+                "kaggle learner",
+                "git 工作流",
+                "约定式提交",
+                "分支策略",
+                "uv 包管理",
+                "uv sync",
+                "日常编码",
+                "工程架构设计",
+                "ML 项目结构",
+                "问题侦探",
+                "验证闭环",
+                "网页设计评审",
+                "Kaggle 学习"
+            ],
+            "skill_candidates": [
+                "git-workflow",
+                "uv-package-manager",
+                "daily-coding",
+                "architecture-design",
+                "bug-detective",
+                "verification-loop",
+                "kaggle-learner",
+                "web-design-reviewer"
+            ],
+            "defaults_by_task": {
+                "planning": "architecture-design",
+                "coding": "daily-coding",
+                "debug": "bug-detective",
+                "review": "web-design-reviewer"
+            }
+        },
+        {
+            "id": "community-claude-scholar-skill-ops",
+            "priority": 83,
+            "grade_allow": [
+                "M",
+                "L",
+                "XL"
+            ],
+            "task_allow": [
+                "planning",
+                "review",
+                "coding"
+            ],
+            "trigger_keywords": [
+                "skill development",
+                "skill improver",
+                "skill quality reviewer",
+                "plugin structure",
+                "hook development",
+                "command development",
+                "agent identifier",
+                "defuddle",
+                "技能开发",
+                "技能改进",
+                "技能质量审查",
+                "插件结构",
+                "hook 开发",
+                "命令开发",
+                "agent 标识",
+                "解乱"
+            ],
+            "skill_candidates": [
+                "skill-development",
+                "skill-improver",
+                "skill-quality-reviewer",
+                "plugin-structure",
+                "hook-development",
+                "command-development",
+                "agent-identifier",
+                "defuddle"
+            ],
+            "defaults_by_task": {
+                "planning": "skill-development",
+                "review": "skill-quality-reviewer",
+                "coding": "command-development"
+            }
+        }
+    ]
+}

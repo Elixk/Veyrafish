@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>报告引擎 · 维舆</title>
+<link rel="stylesheet" href="/static/engine-shared.css">
+<link rel="stylesheet" href="/static/veyu-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+<style>
+.engine-workspace-body{ flex:1; display:flex; flex-direction:column; overflow:hidden; }
+.report-controls{ padding:12px 14px; border-bottom:1px solid rgba(107,72,49,0.1); display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:rgba(255,252,248,0.7); }
+.report-preview-area{ flex:1; overflow:auto; background:#fff; }
+.report-preview-area iframe{ width:100%; height:100%; border:none; display:block; }
+.report-loading-msg{ padding:40px 24px; text-align:center; color:var(--ink-soft); font-size:14px; line-height:2; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-ink left" aria-hidden="true">
+      <img class="topbar-asset left" src="/assets/svg/header-bamboo-corner.svg" alt="" loading="eager" decoding="async">
+    </div>
+    <div class="brand-crest">
+      <img class="brand-logo-seal" src="/assets/svg/logo-seal-red.svg" alt="" loading="eager" decoding="async">
+      <div class="brand-block">
+        <div class="brand-kicker">Veyrafish Platform</div>
+        <div class="brand-title">维舆-新时代高效通用多维度舆论平台</div>
+        <div class="brand-subtitle">Veyrafish · 以微知著，以舆定策</div>
+      </div>
+    </div>
+    <div class="top-nav">
+      <a class="nav-chip" href="/">总览</a>
+      <a class="nav-chip" href="/insight">洞察</a>
+      <a class="nav-chip" href="/media">媒析</a>
+      <a class="nav-chip" href="/query">检索</a>
+      <a class="nav-chip" href="/forum">论坛</a>
+      <a class="nav-chip active" href="/report">报告</a>
+    </div>
+    <div class="utility-actions">
+      <div class="utility-menu" id="utilityMenu">
+        <button class="utility-trigger" id="utilityMenuTrigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="utilityMenuPopover">
+          <span class="utility-trigger-icon" aria-hidden="true"></span>系统
+        </button>
+        <div class="utility-popover" id="utilityMenuPopover" role="dialog" aria-modal="false" aria-label="系统菜单">
+          <div class="utility-popover-title">
+            <span>System actions</span>
+            <button class="utility-popover-close" id="utilityMenuClose" type="button" aria-label="关闭">×</button>
+          </div>
+          <div class="utility-popover-actions">
+            <button class="page-action-button refresh" id="pageRefreshButton">刷新界面</button>
+            <button class="config-button" id="openConfigButton">系统配置</button>
+            <button class="page-action-button shutdown" id="shutdownButton">关闭系统</button>
+          </div>
+          <div class="utility-popover-hint">这些操作属于系统控制层，建议仅在需要时展开。</div>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-ink right" aria-hidden="true">
+      <img class="topbar-asset right" src="/assets/svg/header-bamboo-corner.svg" alt="" loading="eager" decoding="async">
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="engine-hero">
+    <div class="engine-hero-copy">
+      <span class="engine-hero-kicker">Report Engine · R-05</span>
+      <div class="engine-hero-title">报告引擎 · 立论成文</div>
+      <div class="engine-hero-subtitle">采众端而成说，稽群情而定策。汇聚洞察、媒析与检索三引擎成果，生成可交付的综合分析报告。</div>
+      <div class="engine-hero-quote">采群言以成案，稽众论而定策。</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="status-indicator" id="status-report" title="报告引擎状态"></span>
+      <span style="font-size:12px;color:var(--ink-soft);">Report Engine</span>
+    </div>
+  </div>
+
+  <!-- THREE-COLUMN BODY -->
+  <div class="engine-body">
+
+    <!-- LEFT: 报告结构树 -->
+    <aside class="engine-sidebar">
+      <div class="engine-sidebar-header">
+        <span class="section-title">报告结构</span>
+        <span class="section-kicker">Structure</span>
+      </div>
+      <ul class="sidebar-nav" id="reportStructureNav">
+        <li class="sidebar-nav-item active"><span class="sidebar-nav-dot"></span>执行摘要</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>事件概览</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>舆情走势</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>媒体分析</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>论坛分析</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>风险判断</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>对策建议</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>附录证据</li>
+      </ul>
+      <div class="sidebar-nav-placeholder">
+        结构树将随报告生成自动展开，当前为默认章节框架。
+      </div>
+    </aside>
+
+    <!-- CENTER: 报告预览 -->
+    <section class="engine-workspace">
+      <div class="engine-workspace-header">
+        <span class="section-title">报告预览区</span>
+        <span class="section-kicker" id="reportStreamStatus" data-state="idle">未连接</span>
+      </div>
+      <div class="engine-workspace-body">
+        <div class="report-controls">
+          <button class="report-btn primary" id="generateReportButton">生成最终报告</button>
+          <button class="report-btn" id="downloadReportButton" disabled>下载 HTML</button>
+          <button class="report-btn" id="downloadPdfButton" disabled>下载 PDF</button>
+          <button class="report-btn" id="downloadMdButton" disabled>下载 MD</button>
+          <button class="report-btn" id="reloadReportButton" title="重新检查状态">重新加载</button>
+        </div>
+        <div id="taskProgressArea"></div>
+        <div class="report-preview-area" id="reportPreview">
+          <div class="report-loading-msg">点击「生成最终报告」开始生成综合分析报告</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: 导出与操作 -->
+    <aside class="engine-panel">
+      <div class="engine-panel-header">
+        <span class="section-title">导出与操作</span>
+        <span class="section-kicker">Export</span>
+      </div>
+      <div class="engine-panel-body">
+        <!-- 报告议题 -->
+        <div class="summary-card">
+          <div class="summary-card-title">分析议题</div>
+          <input id="reportQueryInput" type="text" placeholder="请输入分析议题或关键词"
+            style="width:100%;padding:8px 10px;border:1px solid rgba(116,73,49,0.2);border-radius:10px;background:rgba(255,252,248,0.95);color:var(--ink);font-size:13px;font-family:inherit;outline:none;margin-top:6px;">
+        </div>
+        <!-- 模板上传 -->
+        <div class="summary-card">
+          <div class="summary-card-title">自定义模板</div>
+          <label for="templateFileInput" style="display:block;margin-top:8px;">
+            <button class="panel-btn" type="button" onclick="document.getElementById('templateFileInput').click()">上传模板文件</button>
+            <input type="file" id="templateFileInput" accept=".md,.txt" style="display:none">
+          </label>
+          <div id="uploadStatus" style="font-size:11px;color:var(--ink-soft);margin-top:6px;min-height:16px;"></div>
+        </div>
+        <!-- 任务信息 -->
+        <div class="summary-card">
+          <div class="summary-card-title">当前任务</div>
+          <div id="taskSummary" class="summary-card-note">暂无进行中的任务</div>
+        </div>
+        <!-- 快捷操作 -->
+        <div class="summary-card">
+          <div class="summary-card-title">快捷操作</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+            <button class="panel-btn" id="quickDownloadHtml" disabled>快速下载 HTML</button>
+            <button class="panel-btn" id="quickDownloadPdf" disabled>快速下载 PDF</button>
+            <button class="panel-btn" id="quickDownloadMd" disabled>快速下载 MD</button>
+          </div>
+        </div>
+        <!-- 说明 -->
+        <div class="summary-placeholder">
+          报告生成完成后，可在此导出 HTML / PDF / MD 三种格式。<br>
+          生成前请确保洞察、媒析、检索三引擎已完成本轮分析。
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- CONSOLE -->
+  <div class="engine-console">
+    <div class="console-header">
+      <span class="console-title">Report Engine · 控制台纪要</span>
+      <span class="console-status" id="connectionStatus">连接中...</span>
+    </div>
+    <div class="console-output" id="engineConsole"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <img class="footer-mountain-left" src="/assets/svg/footer-mountain-left.svg" alt="" loading="lazy" decoding="async">
+    <img class="footer-mountain-right" src="/assets/svg/footer-mountain-right-boat.svg" alt="" loading="lazy" decoding="async">
+    <div class="footer-center">
+      <div class="footer-brand" style="font:15px/1 'STKaiti','KaiTi','楷体',serif;letter-spacing:6px;color:rgba(100,78,58,0.75);">
+        <span>以 微 知 著 · 以 舆 定 策</span>
+        <span style="margin-left:8px;color:#8B1A1A;border:1px solid #8B1A1A;font-size:11px;letter-spacing:0;padding:2px 3px;font-family:'STSong','SimSun',serif;">维</span>
+      </div>
+      <div class="footer-right">
+        <span id="connectionStatus">连接中...</span>
+        <span id="systemTime"></span>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-wrap -->
+
+<!-- SHUTDOWN CONFIRM -->
+<div class="confirm-overlay" id="shutdownConfirmModal" aria-hidden="true">
+  <div class="confirm-dialog danger">
+    <div class="confirm-header">
+      <div class="confirm-title" id="shutdownStrongText">确定要关闭系统吗？</div>
+      <button class="confirm-close" id="closeShutdownConfirm" aria-label="关闭">×</button>
+    </div>
+    <div class="confirm-body">
+      <div class="confirm-text">
+        <div class="confirm-subtext" id="shutdownSubText">将关闭系统并停止所有引擎进程。</div>
+        <div class="confirm-list" id="shutdownPortList"></div>
+      </div>
+    </div>
+    <div class="confirm-actions">
+      <button class="confirm-button" id="cancelShutdownButton">取消</button>
+      <button class="confirm-button danger" id="confirmShutdownButton">立即关闭系统</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIG MODAL -->
+<div class="config-modal-overlay" id="configModal">
+  <div class="config-modal">
+    <div class="config-modal-header">
+      <div class="config-modal-title">LLM 配置 - 与 .env 文件双向同步</div>
+      <div class="config-modal-actions">
+        <button class="config-secondary-button" id="refreshConfigButton">刷新</button>
+        <button class="config-close-button" id="closeConfigModal" aria-label="关闭配置窗口">×</button>
+      </div>
+    </div>
+    <div class="config-modal-body" id="configFormContainer"></div>
+    <div class="config-modal-footer">
+      <div class="config-status-message" id="configStatusMessage"></div>
+      <div class="config-modal-footer-actions">
+        <button class="config-save-button" id="saveConfigButton">保存</button>
+        <button class="config-start-button" id="startSystemButton">保存并启动系统</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="message" id="message"></div>
+
+<script src="/static/engine-shared.js"></script>
+<script>
+// ---- Report Engine 页面专属 JS ----
+let reportTaskId = null;
+let reportPollingInterval = null;
+let reportEventSource = null;
+let reportStreamConnected = false;
+let reportLogStreaming = false;
+let lastCompletedReportTask = null;
+let reportAutoPreviewLoaded = false;
+let autoGenerateTriggered = false;
+let customTemplate = '';
+let reportStreamRetryDelay = 3000;
+let reportStreamReconnectTimer = null;
+let streamHeartbeatTimeout = null;
+let streamHeartbeatInterval = null;
+
+// ---- Report Log Manager ----
+class ReportLogManager {
+  constructor() {
+    this.intervalId = null; this.lineCount = 0; this.isRunning = false;
+    this.refreshInterval = 500; this.consecutiveErrors = 0; this.maxConsecutiveErrors = 10;
+    this.abortController = null; this.isFetching = false; this.lastError = null;
+  }
+  start() {
+    if (this.isRunning || reportLogStreaming) return;
+    this.isRunning = true; this.consecutiveErrors = 0;
+    this.refresh();
+    this.intervalId = setInterval(() => { if (this.isRunning && !reportLogStreaming) this.refresh(); }, this.refreshInterval);
+  }
+  stop() {
+    if (!this.isRunning) return;
+    this.isRunning = false;
+    if (this.intervalId) { clearInterval(this.intervalId); this.intervalId = null; }
+    if (this.abortController) { this.abortController.abort(); this.abortController = null; }
+    this.isFetching = false;
+  }
+  reset() { this.lineCount = 0; this.lastError = null; this.consecutiveErrors = 0; this.isFetching = false; }
+  refresh() {
+    if (!this.isRunning || reportLogStreaming || this.isFetching) return;
+    this.isFetching = true;
+    if (this.abortController) this.abortController.abort();
+    this.abortController = new AbortController();
+    const tid = setTimeout(() => { if (this.abortController) this.abortController.abort(); }, 3000);
+    fetch('/api/report/log', { method: 'GET', headers: { 'Cache-Control': 'no-cache' }, signal: this.abortController.signal })
+      .then(r => { clearTimeout(tid); if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(data => {
+        this.consecutiveErrors = 0;
+        if (!data.success) throw new Error(data.error || '未知错误');
+        const lines = data.log_lines || [];
+        if (lines.length > this.lineCount) {
+          lines.slice(this.lineCount).forEach(line => this.displayLine(line));
+          this.lineCount = lines.length;
+        }
+      })
+      .catch(e => {
+        clearTimeout(tid);
+        if (e.name === 'AbortError') { this.isFetching = false; return; }
+        this.consecutiveErrors++;
+        if (this.consecutiveErrors >= this.maxConsecutiveErrors) {
+          this.stop();
+          setTimeout(() => { if (!this.isRunning) { this.consecutiveErrors = 0; this.start(); } }, 10000);
+        }
+      })
+      .finally(() => { this.isFetching = false; });
+  }
+  displayLine(line) {
+    const m = line.match(/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\s*\|\s*(INFO|DEBUG|WARNING|ERROR|CRITICAL)\s*\|\s*.+?\s*-\s*(.*)$/);
+    if (m) {
+      const level = m[2].trim();
+      const timeOnly = m[1].split(' ')[1];
+      const text = '[' + timeOnly + '] [' + level + '] ' + m[3];
+      const cls = level === 'ERROR' || level === 'CRITICAL' ? 'error' : level === 'WARNING' ? 'warning' : level === 'DEBUG' ? 'debug' : '';
+      appendLog(text, cls);
+    } else {
+      appendLog(line);
+    }
+  }
+}
+const reportLogManager = new ReportLogManager();
+
+// ---- Report Stream helpers ----
+function updateReportStreamStatus(state) {
+  reportStreamConnected = state === 'connected';
+  const el = document.getElementById('reportStreamStatus');
+  if (!el) return;
+  const map = { idle:'未连接', connecting:'连接中', connected:'实时更新中', reconnecting:'等待重连', error:'已断开' };
+  el.textContent = map[state] || state;
+  el.dataset.state = state;
+  refreshConnectionStatus();
+}
+
+function appendReportStreamLine(msg, level, options) {
+  options = options || {};
+  if (level === 'chunk' && !options.force) return;
+  const ts = new Date().toLocaleTimeString('zh-CN');
+  let text = '[' + ts + ']';
+  if (options.badge) text += ' [' + options.badge + ']';
+  text += ' ' + msg;
+  const cls = level === 'error' ? 'error' : level === 'warning' || level === 'warn' ? 'warning' : level === 'debug' ? 'debug' : '';
+  appendLog(text, cls);
+}
+
+function resetReportStreamOutput(message) {
+  appendReportStreamLine(message || '等待 Report 任务启动...', 'info', { badge: 'REPORT', force: true });
+}
+
+function startStreamHeartbeat() {
+  clearStreamHeartbeat();
+  const emit = () => appendReportStreamLine('Report Engine 正在流式生成，请耐心等待...', 'info', { badge: 'REPORT', force: true });
+  const now = Date.now(); const toNext = 60000 - (now % 60000);
+  streamHeartbeatTimeout = setTimeout(() => { emit(); streamHeartbeatInterval = setInterval(emit, 60000); }, toNext);
+}
+function clearStreamHeartbeat() {
+  if (streamHeartbeatTimeout) { clearTimeout(streamHeartbeatTimeout); streamHeartbeatTimeout = null; }
+  if (streamHeartbeatInterval) { clearInterval(streamHeartbeatInterval); streamHeartbeatInterval = null; }
+}
+
+function safeCloseReportStream(silent, force) {
+  clearStreamHeartbeat();
+  if (reportStreamReconnectTimer) { clearTimeout(reportStreamReconnectTimer); reportStreamReconnectTimer = null; }
+  if (reportEventSource) {
+    if (reportEventSource.readyState !== EventSource.CLOSED) reportEventSource.close();
+    reportEventSource = null;
+  }
+  updateReportStreamStatus('idle');
+  reportLogStreaming = false;
+}
+
+function openReportStream(taskId, isRetry) {
+  if (!taskId || !window.EventSource) {
+    if (!window.EventSource) appendReportStreamLine('浏览器不支持SSE，已切换为轮询模式', 'warn', { badge: 'SSE', force: true });
+    updateReportStreamStatus('error');
+    startProgressPolling(taskId);
+    return;
+  }
+  if (reportEventSource && reportEventSource.__taskId === taskId && reportEventSource.readyState !== EventSource.CLOSED) return;
+  safeCloseReportStream(true, true);
+
+  updateReportStreamStatus('connecting');
+  appendReportStreamLine('正在建立 SSE 连接...', 'info', { badge: 'SSE', force: true });
+
+  const es = new EventSource('/api/report/stream/' + taskId);
+  es.__taskId = taskId;
+  reportEventSource = es;
+  reportLogStreaming = true;
+
+  es.addEventListener('task_event', function (e) {
+    try {
+      const data = JSON.parse(e.data);
+      if (data.type === 'heartbeat') return;
+      const lvl = data.level ? data.level.toLowerCase() : 'info';
+      appendReportStreamLine(data.message || JSON.stringify(data), lvl, { badge: data.stage || 'REPORT', force: true });
+      if (data.type === 'task_complete' || data.status === 'completed') {
+        stopProgressPolling();
+        viewReport(taskId);
+        reportAutoPreviewLoaded = true;
+        autoGenerateTriggered = false;
+        reportTaskId = null;
+        setGenerateButtonState(false);
+        updateReportStreamStatus('idle');
+        safeCloseReportStream();
+      }
+      if (data.task) updateTaskProgressStatus(data.task);
+    } catch(ex) { appendReportStreamLine(e.data, 'info', { force: true }); }
+  });
+
+  es.onopen = function () {
+    updateReportStreamStatus('connected');
+    startStreamHeartbeat();
+    appendReportStreamLine('SSE 连接已建立', 'success', { badge: 'SSE', force: true });
+  };
+
+  es.onerror = function () {
+    updateReportStreamStatus('error');
+    clearStreamHeartbeat();
+    if (reportEventSource) { reportEventSource.close(); reportEventSource = null; }
+    reportLogStreaming = false;
+    if (taskId && reportTaskId === taskId) {
+      appendReportStreamLine('SSE 连接中断，切换轮询模式', 'warn', { badge: 'SSE', force: true });
+      startProgressPolling(taskId);
+      reportStreamReconnectTimer = setTimeout(() => {
+        if (reportTaskId === taskId) { reportStreamRetryDelay = Math.min(reportStreamRetryDelay * 1.5, 30000); openReportStream(taskId, true); }
+      }, reportStreamRetryDelay);
+    }
+  };
+}
+
+// ---- Progress polling ----
+function stopProgressPolling() {
+  if (reportPollingInterval) { clearInterval(reportPollingInterval); reportPollingInterval = null; }
+}
+function startProgressPolling(taskId) {
+  if (!taskId) return;
+  stopProgressPolling();
+  checkTaskProgress(taskId);
+  reportPollingInterval = setInterval(() => { checkTaskProgress(taskId); }, 2000);
+}
+function checkTaskProgress(taskId) {
+  fetch('/api/report/progress/' + taskId)
+    .then(r => r.json())
+    .then(data => {
+      if (!data.success) return;
+      updateTaskProgressStatus(data.task);
+      if (data.task.status === 'completed') {
+        stopProgressPolling();
+        showMessage('报告生成完成！', 'success');
+        viewReport(taskId);
+        reportAutoPreviewLoaded = true;
+        autoGenerateTriggered = false;
+        reportTaskId = null;
+        setGenerateButtonState(false);
+      } else if (data.task.status === 'error') {
+        stopProgressPolling();
+        showMessage('报告生成失败: ' + data.task.error_message, 'error');
+        autoGenerateTriggered = false;
+        reportTaskId = null;
+        setGenerateButtonState(false);
+      }
+    })
+    .catch(e => console.error('检查进度失败:', e));
+}
+
+// ---- Task UI ----
+function setGenerateButtonState(loading) {
+  const btn = document.getElementById('generateReportButton');
+  if (!btn) return;
+  if (loading || reportTaskId) {
+    if (!btn.dataset.origText) btn.dataset.origText = btn.textContent || '生成最终报告';
+    btn.disabled = true; btn.textContent = '生成中...';
+  } else {
+    btn.disabled = false; btn.textContent = btn.dataset.origText || '生成最终报告';
+  }
+}
+
+function updateDownloadButtonState(task) {
+  const htmlBtn = document.getElementById('downloadReportButton');
+  const pdfBtn = document.getElementById('downloadPdfButton');
+  const mdBtn = document.getElementById('downloadMdButton');
+  const qHtml = document.getElementById('quickDownloadHtml');
+  const qPdf = document.getElementById('quickDownloadPdf');
+  const qMd = document.getElementById('quickDownloadMd');
+  const taskSummary = document.getElementById('taskSummary');
+
+  const ready = task && task.status === 'completed' && (task.report_file_ready || task.report_file_path || task.has_result);
+  const irReady = task && task.status === 'completed' && (task.ir_file_ready || task.ir_file_path);
+
+  [htmlBtn, qHtml].forEach(b => { if (b) { b.disabled = !ready; if (task) b.dataset.taskId = task.task_id; } });
+  [pdfBtn, qPdf].forEach(b => { if (b) { b.disabled = !irReady; if (task) b.dataset.taskId = task.task_id; } });
+  [mdBtn, qMd].forEach(b => { if (b) { b.disabled = !irReady; if (task) b.dataset.taskId = task.task_id; } });
+
+  if (ready) lastCompletedReportTask = task;
+
+  if (taskSummary) {
+    if (task && task.task_id) {
+      const statusMap = { running:'生成中', completed:'已完成', error:'失败', pending:'等待中' };
+      taskSummary.innerHTML = '<strong>' + (task.query || '—') + '</strong><br>' +
+        '状态：' + (statusMap[task.status] || task.status) +
+        (task.progress !== undefined ? '（' + task.progress + '%）' : '') +
+        (task.task_id ? '<br><span style="font-size:10px;opacity:0.6;">ID: ' + task.task_id.substring(0,12) + '...</span>' : '');
+    } else {
+      taskSummary.textContent = '暂无进行中的任务';
+    }
+  }
+}
+
+function updateTaskProgressStatus(task) {
+  const area = document.getElementById('taskProgressArea');
+  if (!area) return;
+  if (!task) { area.innerHTML = ''; return; }
+  const statusMap = { running:'正在生成', completed:'已完成', error:'生成失败', pending:'等待中' };
+  const pct = typeof task.progress === 'number' ? task.progress : 0;
+  const badgeCls = task.status === 'completed' ? 'task-status-completed' : task.status === 'error' ? 'task-status-error' : 'task-status-running';
+  const spinner = task.status === 'running' ? '<span class="report-loading-spinner"></span>' : '';
+  area.innerHTML = `<div class="task-progress-container">
+    <div class="task-progress-header">
+      <div class="task-progress-title">${spinner}报告生成任务<span class="task-status-badge ${badgeCls}">${statusMap[task.status] || task.status}</span></div>
+      <div class="task-progress-bar" style="margin-left:auto"><div class="task-progress-fill" style="width:${pct}%"></div><div class="task-progress-text">${pct}%</div></div>
+    </div>
+    ${task.query ? '<div class="task-info-line"><span class="task-info-item"><span class="task-info-label">议题：</span><span class="task-info-value">' + task.query + '</span></span></div>' : ''}
+    ${task.status === 'error' && task.error_message ? '<div style="margin-top:10px;padding:8px;background:#ffe6e6;border-left:3px solid #ff4444;font-size:12px;">' + task.error_message + '</div>' : ''}
+  </div>`;
+
+  updateDownloadButtonState(task);
+}
+
+// ---- Generate report ----
+function generateReport() {
+  if (reportTaskId) { showMessage('已有报告生成任务在运行', 'info'); return; }
+  const queryInput = document.getElementById('reportQueryInput');
+  const query = (queryInput ? queryInput.value.trim() : '') || '智能舆情分析报告';
+
+  reportLogManager.stop();
+  reportAutoPreviewLoaded = false;
+  safeCloseReportStream(true);
+  clearConsole('[系统] 开始生成报告，日志已重置');
+  resetReportStreamOutput('Report Engine 正在调度任务...');
+  setGenerateButtonState(true);
+
+  const reqData = { query: query };
+  if (customTemplate && customTemplate.trim()) reqData.custom_template = customTemplate;
+
+  fetch('/api/report/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(reqData)
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      reportTaskId = data.task_id;
+      showMessage('报告生成已启动', 'success');
+      updateTaskProgressStatus({ task_id: data.task_id, query: query, status: 'running', progress: 5, created_at: new Date().toISOString(), updated_at: new Date().toISOString() });
+      appendReportStreamLine('任务创建成功，正在建立流式连接...', 'info', { force: true });
+      reportLogManager.reset();
+      reportLogManager.start();
+      startProgressPolling(reportTaskId);
+      if (window.EventSource) openReportStream(reportTaskId);
+    } else {
+      autoGenerateTriggered = false; reportTaskId = null;
+      setGenerateButtonState(false);
+      appendReportStreamLine('任务启动失败: ' + (data.error || '未知错误'), 'error');
+      updateReportStreamStatus('error');
+    }
+  })
+  .catch(e => {
+    console.error('生成报告失败:', e);
+    autoGenerateTriggered = false; reportTaskId = null;
+    setGenerateButtonState(false);
+    appendReportStreamLine('任务启动异常: ' + e.message, 'error');
+    updateReportStreamStatus('error');
+  });
+}
+
+// ---- View report ----
+function viewReport(taskId) {
+  const preview = document.getElementById('reportPreview');
+  if (!preview) return;
+  fetch('/api/report/result/' + taskId + '/json')
+    .then(r => r.json())
+    .then(data => {
+      if (data.success && data.html_content) {
+        preview.innerHTML = '';
+        const iframe = document.createElement('iframe');
+        iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
+        preview.appendChild(iframe);
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.open(); doc.write(data.html_content); doc.close();
+        showMessage('报告已生成并加载完成', 'success');
+        updateDownloadButtonState(data.task || { task_id: taskId, status: 'completed', has_result: true, ir_file_ready: true });
+      }
+    })
+    .catch(e => { console.error('加载报告失败:', e); });
+}
+
+// ---- Download ----
+function downloadReport(taskId) {
+  const btn = document.getElementById('downloadReportButton');
+  const tid = taskId || (btn ? btn.dataset.taskId : '') || (lastCompletedReportTask ? lastCompletedReportTask.task_id : '');
+  if (!tid) { showMessage('暂无可下载的报告，请先生成', 'error'); return; }
+  fetch('/api/report/download/' + tid)
+    .then(r => {
+      if (!r.ok) return r.json().then(e => { throw new Error(e.error || '下载失败'); });
+      return r.blob().then(blob => ({ blob, disposition: r.headers.get('Content-Disposition') || '' }));
+    })
+    .then(({ blob, disposition }) => {
+      const match = disposition.match(/filename="?([^";]+)"?/i);
+      const filename = match ? match[1] : 'final_report_' + tid + '.html';
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+      showMessage('报告文件已开始下载', 'success');
+    })
+    .catch(e => showMessage('下载失败: ' + e.message, 'error'));
+}
+
+async function downloadPdfReport(taskId) {
+  const btn = document.getElementById('downloadPdfButton');
+  const tid = taskId || (btn ? btn.dataset.taskId : '') || (lastCompletedReportTask ? lastCompletedReportTask.task_id : '');
+  if (!tid) { showMessage('无可用的报告任务，请先生成', 'error'); return; }
+  if (btn) btn.disabled = true;
+  showMessage('正在生成 PDF，请稍候...', 'info');
+  try {
+    const resp = await fetch('/api/report/export/pdf/' + tid + '?optimize=true');
+    if (!resp.ok) { const e = await resp.json(); throw new Error(e.error || 'PDF导出失败'); }
+    const cd = resp.headers.get('Content-Disposition') || '';
+    const m = /filename="?([^"]+)"?/.exec(cd);
+    const fname = m ? m[1] : 'report.pdf';
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = fname;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    showMessage('PDF 生成完成，已开始下载', 'success');
+  } catch (e) { showMessage('导出 PDF 失败: ' + e.message, 'error'); }
+  finally { if (btn) btn.disabled = false; }
+}
+
+async function downloadMdReport(taskId) {
+  const btn = document.getElementById('downloadMdButton');
+  const tid = taskId || (btn ? btn.dataset.taskId : '') || (lastCompletedReportTask ? lastCompletedReportTask.task_id : '');
+  if (!tid) { showMessage('无可用的报告任务，请先生成', 'error'); return; }
+  if (btn) btn.disabled = true;
+  showMessage('正在生成 Markdown...', 'info');
+  try {
+    const resp = await fetch('/api/report/export/md/' + tid);
+    if (!resp.ok) { const e = await resp.json().catch(() => ({})); throw new Error(e.error || 'MD导出失败'); }
+    const cd = resp.headers.get('Content-Disposition') || '';
+    const m = /filename="?([^";]+)"?/i.exec(cd);
+    const fname = m ? m[1] : 'report.md';
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = fname;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    showMessage('Markdown 导出完成', 'success');
+  } catch (e) { showMessage('导出 MD 失败: ' + e.message, 'error'); }
+  finally { if (btn) btn.disabled = false; }
+}
+
+// ---- Load interface ----
+function loadReportInterface() {
+  fetch('/api/report/status')
+    .then(r => r.json())
+    .then(data => {
+      if (!data.success) { appendLog('[错误] 无法获取 Report Engine 状态: ' + (data.error || '未知'), 'error'); return; }
+      const ind = document.getElementById('status-report');
+      if (ind) { ind.className = 'status-indicator ' + (data.initialized ? 'running' : ''); appStatus.report = data.initialized ? 'running' : 'stopped'; }
+      if (data.current_task) {
+        updateTaskProgressStatus(data.current_task);
+        if (data.current_task.status === 'running') {
+          reportTaskId = data.current_task.task_id;
+          setGenerateButtonState(true);
+          reportLogManager.reset();
+          reportLogManager.start();
+          startProgressPolling(reportTaskId);
+          if (window.EventSource) openReportStream(reportTaskId);
+        } else if (data.current_task.status === 'completed') {
+          lastCompletedReportTask = data.current_task;
+          updateDownloadButtonState(data.current_task);
+        }
+      }
+      updateReportStreamStatus('idle');
+      resetReportStreamOutput('等待新的 Report 任务启动...');
+      reportLogManager.start();
+    })
+    .catch(e => appendLog('[错误] 加载报告界面失败: ' + e.message, 'error'));
+}
+
+// ---- Template upload ----
+function handleTemplateUpload(e) {
+  const file = e.target.files[0];
+  const status = document.getElementById('uploadStatus');
+  if (!file) { customTemplate = ''; return; }
+  if (!file.name.endsWith('.md') && !file.name.endsWith('.txt')) {
+    if (status) { status.textContent = '请选择 .md 或 .txt 文件'; status.style.color = '#8b1a1a'; }
+    customTemplate = ''; e.target.value = ''; return;
+  }
+  if (file.size > 1024 * 1024) {
+    if (status) { status.textContent = '文件不能超过 1MB'; status.style.color = '#8b1a1a'; }
+    customTemplate = ''; e.target.value = ''; return;
+  }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    customTemplate = ev.target.result;
+    if (status) { status.textContent = '已加载：' + file.name; status.style.color = '#2a5a1a'; }
+    showMessage('模板已加载: ' + file.name, 'success');
+  };
+  reader.onerror = () => { customTemplate = ''; if (status) { status.textContent = '读取失败'; status.style.color = '#8b1a1a'; } };
+  reader.readAsText(file, 'utf-8');
+}
+
+// ---- Init ----
+document.addEventListener('DOMContentLoaded', function () {
+  initUtilityMenu();
+  bindSharedListeners();
+  initEngineSocket('report');
+  ensureSystemReady();
+
+  // Extra socket listener for forum messages (not needed here)
+  if (typeof io !== 'undefined' && socket) {
+    socket.on('status_update', function (data) { updateAppStatus(data); });
+  }
+
+  // Bind report-specific buttons
+  const genBtn = document.getElementById('generateReportButton');
+  if (genBtn) genBtn.addEventListener('click', generateReport);
+
+  const dlHtml = document.getElementById('downloadReportButton');
+  if (dlHtml) dlHtml.addEventListener('click', () => downloadReport());
+  const dlPdf = document.getElementById('downloadPdfButton');
+  if (dlPdf) dlPdf.addEventListener('click', () => downloadPdfReport());
+  const dlMd = document.getElementById('downloadMdButton');
+  if (dlMd) dlMd.addEventListener('click', () => downloadMdReport());
+
+  const qHtml = document.getElementById('quickDownloadHtml');
+  if (qHtml) qHtml.addEventListener('click', () => downloadReport());
+  const qPdf = document.getElementById('quickDownloadPdf');
+  if (qPdf) qPdf.addEventListener('click', () => downloadPdfReport());
+  const qMd = document.getElementById('quickDownloadMd');
+  if (qMd) qMd.addEventListener('click', () => downloadMdReport());
+
+  const reload = document.getElementById('reloadReportButton');
+  if (reload) reload.addEventListener('click', loadReportInterface);
+
+  const tplInput = document.getElementById('templateFileInput');
+  if (tplInput) tplInput.addEventListener('change', handleTemplateUpload);
+
+  // Time & status
+  updateTime();
+  setInterval(updateTime, 1000);
+  checkStatus();
+  setInterval(checkStatus, 10000);
+  startConnectionProbe();
+
+  // Load report interface
+  loadReportInterface();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>论坛引擎 · 维舆</title>
+<link rel="stylesheet" href="/static/engine-shared.css">
+<link rel="stylesheet" href="/static/veyu-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+<style>
+.forum-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;}
+.forum-message{padding:12px 14px;border:1px solid rgba(107,72,49,0.14);border-radius:14px;word-break:break-word;background:rgba(255,252,248,0.9);max-width:95%;}
+.forum-message.agent{max-width:100%;}
+.forum-message.host{background:rgba(140,47,38,0.07);border-color:rgba(140,47,38,0.2);}
+.forum-message.insight-engine{background:#f2ebf3;border-color:#8e6a9f;}
+.forum-message.query-engine{background:#eaf1f8;border-color:#608ab1;}
+.forum-message.media-engine{background:#ebf2ea;border-color:#6a9a6e;}
+.forum-message-header{display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:12px;font-weight:700;color:var(--ink-soft);letter-spacing:0.06em;}
+.forum-message-content{font-size:13px;line-height:1.8;color:var(--ink);}
+.forum-timestamp{font-size:11px;color:rgba(100,82,72,0.55);margin-top:4px;}
+.forum-empty{padding:40px;text-align:center;color:var(--ink-soft);font-size:14px;line-height:2;}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-ink left" aria-hidden="true">
+      <img class="topbar-asset left" src="/assets/svg/header-bamboo-corner.svg" alt="" loading="eager" decoding="async">
+    </div>
+    <div class="brand-crest">
+      <img class="brand-logo-seal" src="/assets/svg/logo-seal-red.svg" alt="" loading="eager" decoding="async">
+      <div class="brand-block">
+        <div class="brand-kicker">Veyrafish Platform</div>
+        <div class="brand-title">维舆-新时代高效通用多维度舆论平台</div>
+        <div class="brand-subtitle">Veyrafish · 以微知著，以舆定策</div>
+      </div>
+    </div>
+    <div class="top-nav">
+      <a class="nav-chip" href="/">总览</a>
+      <a class="nav-chip" href="/insight">洞察</a>
+      <a class="nav-chip" href="/media">媒析</a>
+      <a class="nav-chip" href="/query">检索</a>
+      <a class="nav-chip active" href="/forum">论坛</a>
+      <a class="nav-chip" href="/report">报告</a>
+    </div>
+    <div class="utility-actions">
+      <div class="utility-menu" id="utilityMenu">
+        <button class="utility-trigger" id="utilityMenuTrigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="utilityMenuPopover">
+          <span class="utility-trigger-icon" aria-hidden="true"></span>系统
+        </button>
+        <div class="utility-popover" id="utilityMenuPopover" role="dialog" aria-modal="false" aria-label="系统菜单">
+          <div class="utility-popover-title">
+            <span>System actions</span>
+            <button class="utility-popover-close" id="utilityMenuClose" type="button" aria-label="关闭">×</button>
+          </div>
+          <div class="utility-popover-actions">
+            <button class="page-action-button refresh" id="pageRefreshButton">刷新界面</button>
+            <button class="config-button" id="openConfigButton">系统配置</button>
+            <button class="page-action-button shutdown" id="shutdownButton">关闭系统</button>
+          </div>
+          <div class="utility-popover-hint">这些操作属于系统控制层，建议仅在需要时展开。</div>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-ink right" aria-hidden="true">
+      <img class="topbar-asset right" src="/assets/svg/header-bamboo-corner.svg" alt="" loading="eager" decoding="async">
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="engine-hero">
+    <div class="engine-hero-copy">
+      <span class="engine-hero-kicker">Forum Engine · F-04</span>
+      <div class="engine-hero-title">论坛引擎 · 察众议之所归</div>
+      <div class="engine-hero-subtitle">行能臧否，或素定怀抱，或得之舆论。三引擎在此汇报讨论成果，主持人协调研判方向。</div>
+      <div class="engine-hero-quote">行能臧否，或素定怀抱，或得之舆论。</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="status-indicator running" id="status-forum" title="论坛引擎状态"></span>
+      <span style="font-size:12px;color:var(--ink-soft);">Forum Engine</span>
+    </div>
+  </div>
+
+  <!-- THREE-COLUMN BODY -->
+  <div class="engine-body">
+
+    <!-- LEFT: 论坛维度 -->
+    <aside class="engine-sidebar">
+      <div class="engine-sidebar-header">
+        <span class="section-title">论坛维度</span>
+        <span class="section-kicker">Dimension</span>
+      </div>
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-item active"><span class="sidebar-nav-dot"></span>全部讨论</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>洞察引擎</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>媒析引擎</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>检索引擎</li>
+        <li class="sidebar-nav-item"><span class="sidebar-nav-dot"></span>论坛主持人</li>
+      </ul>
+      <div class="sidebar-nav-placeholder">
+        当前展示所有引擎在论坛中的实时讨论消息流。
+      </div>
+      <!-- Forum controls -->
+      <div style="padding:12px;border-top:1px solid rgba(107,72,49,0.1);">
+        <button class="panel-btn" id="refreshForumBtn">刷新消息</button>
+        <button class="panel-btn" id="clearForumBtn" style="margin-top:6px;">清空视图</button>
+        <div style="margin-top:8px;font-size:11px;color:var(--ink-soft);">
+          消息数：<span id="messageCount">0</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER: 论坛消息流 -->
+    <section class="engine-workspace">
+      <div class="engine-workspace-header">
+        <span class="section-title">讨论消息流</span>
+        <span class="section-kicker">Forum Stream</span>
+      </div>
+      <div class="engine-workspace-body">
+        <div class="forum-messages" id="forumChatArea">
+          <div class="forum-empty">暂无论坛消息。引擎启动后，三引擎的讨论将在此实时显示。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: 研判摘要 -->
+    <aside class="engine-panel">
+      <div class="engine-panel-header">
+        <span class="section-title">论坛研判</span>
+        <span class="section-kicker">Summary</span>
+      </div>
+      <div class="engine-panel-body">
+        <div class="summary-card">
+          <div class="summary-card-title">场域温度</div>
+          <div class="summary-card-value" id="forumTemperature">—</div>
+          <div class="summary-card-note">基于讨论活跃度与情绪词频估算</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-title">参与引擎</div>
+          <div id="engineParticipants" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+            <span style="padding:4px 10px;border-radius:8px;background:rgba(128,49,36,0.08);color:var(--accent);font-size:12px;">Insight</span>
+            <span style="padding:4px 10px;border-radius:8px;background:rgba(74,116,128,0.08);color:#3a7288;font-size:12px;">Media</span>
+            <span style="padding:4px 10px;border-radius:8px;background:rgba(74,96,128,0.08);color:#3a5280;font-size:12px;">Query</span>
+            <span style="padding:4px 10px;border-radius:8px;background:rgba(100,80,30,0.1);color:#5a4a18;font-size:12px;">Host</span>
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-title">论坛消息统计</div>
+          <div id="forumStats" class="summary-card-note" style="margin-top:6px;">
+            共 <span id="totalMessages">0</span> 条消息<br>
+            <span id="lastUpdateTime">—</span>
+          </div>
+        </div>
+        <div class="summary-placeholder">
+          论坛研判摘要将在分析完成后自动更新。
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- CONSOLE -->
+  <div class="engine-console">
+    <div class="console-header">
+      <span class="console-title">Forum Engine · 原始日志流</span>
+      <span class="console-status" id="connectionStatus">连接中...</span>
+    </div>
+    <div class="console-output" id="engineConsole"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <img class="footer-mountain-left" src="/assets/svg/footer-mountain-left.svg" alt="" loading="lazy" decoding="async">
+    <img class="footer-mountain-right" src="/assets/svg/footer-mountain-right-boat.svg" alt="" loading="lazy" decoding="async">
+    <div class="footer-center">
+      <div class="footer-brand" style="font:15px/1 'STKaiti','KaiTi','楷体',serif;letter-spacing:6px;color:rgba(100,78,58,0.75);">
+        <span>以 微 知 著 · 以 舆 定 策</span>
+        <span style="margin-left:8px;color:#8B1A1A;border:1px solid #8B1A1A;font-size:11px;letter-spacing:0;padding:2px 3px;font-family:'STSong','SimSun',serif;">维</span>
+      </div>
+      <div class="footer-right">
+        <span id="connectionStatus">连接中...</span>
+        <span id="systemTime"></span>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /page-wrap -->
+
+<!-- SHUTDOWN CONFIRM -->
+<div class="confirm-overlay" id="shutdownConfirmModal" aria-hidden="true">
+  <div class="confirm-dialog danger">
+    <div class="confirm-header">
+      <div class="confirm-title" id="shutdownStrongText">确定要关闭系统吗？</div>
+      <button class="confirm-close" id="closeShutdownConfirm" aria-label="关闭">×</button>
+    </div>
+    <div class="confirm-body">
+      <div class="confirm-text">
+        <div class="confirm-subtext">将关闭系统并停止所有引擎进程。</div>
+        <div class="confirm-list" id="shutdownPortList"></div>
+      </div>
+    </div>
+    <div class="confirm-actions">
+      <button class="confirm-button" id="cancelShutdownButton">取消</button>
+      <button class="confirm-button danger" id="confirmShutdownButton">立即关闭系统</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIG MODAL -->
+<div class="config-modal-overlay" id="configModal">
+  <div class="config-modal">
+    <div class="config-modal-header">
+      <div class="config-modal-title">LLM 配置 - 与 .env 文件双向同步</div>
+      <div class="config-modal-actions">
+        <button class="config-secondary-button" id="refreshConfigButton">刷新</button>
+        <button class="config-close-button" id="closeConfigModal" aria-label="关闭配置窗口">×</button>
+      </div>
+    </div>
+    <div class="config-modal-body" id="configFormContainer"></div>
+    <div class="config-modal-footer">
+      <div class="config-status-message" id="configStatusMessage"></div>
+      <div class="config-modal-footer-actions">
+        <button class="config-save-button" id="saveConfigButton">保存</button>
+        <button class="config-start-button" id="startSystemButton">保存并启动系统</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="message" id="message"></div>
+
+<script src="/static/engine-shared.js"></script>
+<script>
+// ---- Forum Engine 专属 JS ----
+let forumLogLineCount = 0;
+let forumMessagesCache = [];
+let forumAutoScrollEnabled = true;
+
+// Parse forum log line into message object
+function parseForumMessage(line) {
+  try {
+    const timeMatch = line.match(/^\[(\d{2}:\d{2}:\d{2})\]/);
+    if (!timeMatch) return null;
+    const ts = timeMatch[1];
+    const rest = line.substring(timeMatch[0].length).trim();
+    const srcMatch = rest.match(/^\[([^\]]+)\]\s*(.*)$/);
+    if (!srcMatch) return null;
+    const source = srcMatch[1];
+    const content = srcMatch[2];
+    if (!['QUERY','INSIGHT','MEDIA','HOST'].includes(source.toUpperCase()) || !content || content.includes('=== ForumEngine')) return null;
+    let type = 'agent', displayName = '';
+    switch (source.toUpperCase()) {
+      case 'INSIGHT': displayName = 'Insight Engine'; break;
+      case 'MEDIA': displayName = 'Media Engine'; break;
+      case 'QUERY': displayName = 'Query Engine'; break;
+      case 'HOST': type = 'host'; displayName = 'Forum Host'; break;
+    }
+    return { type, source: displayName, content: content.replace(/\\n/g, '\n').replace(/\\r/g, ''), timestamp: ts };
+  } catch(e) { return null; }
+}
+
+function formatContent(content) {
+  if (!content) return '';
+  return content.replace(/\n/g, '<br>').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&lt;br&gt;/g, '<br>');
+}
+
+function escapeStr(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function addForumMessage(data, opts) {
+  opts = opts || {};
+  const chatArea = document.getElementById('forumChatArea');
+  if (!chatArea) return;
+  // Remove placeholder
+  const placeholder = chatArea.querySelector('.forum-empty');
+  if (placeholder) placeholder.remove();
+
+  const div = document.createElement('div');
+  div.className = 'forum-message ' + (data.type || 'agent');
+  if (data.source) {
+    const sc = data.source.toLowerCase().replace(/\s+/g, '-');
+    div.classList.add(sc);
+    if (sc.includes('insight')) div.classList.add('insight-engine');
+    else if (sc.includes('query')) div.classList.add('query-engine');
+    else if (sc.includes('media')) div.classList.add('media-engine');
+    else if (sc.includes('host')) div.classList.add('host');
+  }
+  div.innerHTML = '<div class="forum-message-header">' + escapeStr(data.source || data.sender || '—') + '</div>' +
+    '<div class="forum-message-content">' + formatContent(data.content) + '</div>' +
+    '<div class="forum-timestamp">' + escapeStr(data.timestamp || new Date().toLocaleTimeString('zh-CN')) + '</div>';
+
+  if (opts.prepend && chatArea.firstChild) chatArea.insertBefore(div, chatArea.firstChild);
+  else chatArea.appendChild(div);
+
+  if (!opts.suppressScroll && forumAutoScrollEnabled) scrollForumToBottom();
+  updateForumStats();
+}
+
+function scrollForumToBottom(force) {
+  const area = document.getElementById('forumChatArea');
+  if (area && (force || forumAutoScrollEnabled)) requestAnimationFrame(() => { area.scrollTop = area.scrollHeight; });
+}
+
+function updateForumStats() {
+  const area = document.getElementById('forumChatArea');
+  const count = area ? area.querySelectorAll('.forum-message').length : 0;
+  const mc = document.getElementById('messageCount');
+  const tm = document.getElementById('totalMessages');
+  const lu = document.getElementById('lastUpdateTime');
+  if (mc) mc.textContent = count;
+  if (tm) tm.textContent = count;
+  if (lu) lu.textContent = '最后更新：' + new Date().toLocaleTimeString('zh-CN');
+}
+
+function applyForumMessages(parsed, opts) {
+  opts = opts || {};
+  const chatArea = document.getElementById('forumChatArea');
+  if (!chatArea) return;
+  const incoming = parsed || [];
+
+  if (opts.reset || incoming.length < forumMessagesCache.length) {
+    chatArea.innerHTML = '';
+    forumMessagesCache = [];
+    if (incoming.length === 0) {
+      chatArea.innerHTML = '<div class="forum-empty">暂无论坛消息。</div>';
+      return;
+    }
+  }
+
+  if (forumMessagesCache.length === 0) {
+    forumMessagesCache = incoming.slice();
+    incoming.forEach(m => addForumMessage(m, { suppressScroll: true }));
+    scrollForumToBottom(true);
+    return;
+  }
+
+  if (incoming.length > forumMessagesCache.length) {
+    const newMsgs = incoming.slice(forumMessagesCache.length);
+    forumMessagesCache = incoming.slice();
+    newMsgs.forEach(m => addForumMessage(m, { suppressScroll: true }));
+    if (forumAutoScrollEnabled) scrollForumToBottom();
+  }
+}
+
+function refreshForumMessages() {
+  fetch('/api/forum/log')
+    .then(r => r.json())
+    .then(data => {
+      if (!data.success) return;
+      const logLines = data.log_lines || [];
+      const parsedMsgs = data.parsed_messages || [];
+      const shrunk = logLines.length < forumLogLineCount || parsedMsgs.length < forumMessagesCache.length;
+
+      if (logLines.length > forumLogLineCount) {
+        logLines.slice(forumLogLineCount).forEach(line => appendLog(line));
+      }
+      applyForumMessages(parsedMsgs, { reset: shrunk });
+      forumLogLineCount = logLines.length;
+    })
+    .catch(e => console.error('刷新论坛消息失败:', e));
+}
+
+// ---- Init ----
+document.addEventListener('DOMContentLoaded', function () {
+  initUtilityMenu();
+  bindSharedListeners();
+
+  if (typeof io !== 'undefined') {
+    socket = io();
+    socket.on('connect', function () { socketConnected = true; refreshConnectionStatus(); });
+    socket.on('disconnect', function () { socketConnected = false; refreshConnectionStatus(); });
+    socket.on('console_output', function (data) {
+      if (data.app === 'forum') appendLog(data.line || '');
+    });
+    socket.on('forum_message', function (data) {
+      if (data && data.content) addForumMessage(data);
+    });
+    socket.on('status_update', function (data) { updateAppStatus(data); });
+  }
+
+  ensureSystemReady();
+
+  const refreshBtn = document.getElementById('refreshForumBtn');
+  if (refreshBtn) refreshBtn.addEventListener('click', function () { forumMessagesCache = []; forumLogLineCount = 0; refreshForumMessages(); });
+
+  const clearBtn = document.getElementById('clearForumBtn');
+  if (clearBtn) clearBtn.addEventListener('click', function () {
+    const area = document.getElementById('forumChatArea');
+    if (area) { area.innerHTML = '<div class="forum-empty">视图已清空，等待新消息。</div>'; }
+    forumMessagesCache = [];
+  });
+
+  // Forum scroll behavior
+  const chatArea = document.getElementById('forumChatArea');
+  if (chatArea) {
+    chatArea.addEventListener('scroll', function () {
+      const nearBottom = chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight < 60;
+      forumAutoScrollEnabled = nearBottom;
+    });
+  }
+
+  updateTime();
+  setInterval(updateTime, 1000);
+  checkStatus();
+  setInterval(checkStatus, 10000);
+  startConnectionProbe();
+
+  // Initial load + periodic refresh
+  refreshForumMessages();
+  setInterval(refreshForumMessages, 2000);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+.git
+.gitmodules
+.vscode
+.cursor
+__pycache__
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.tmp_pytest/
+.tmp_pytest*/
+.tmp_pytest_run/
+*.log
+*.sqlite3
+.DS_Store
+Thumbs.db
+
+# 开发与文档（不需要打包进运行时镜像）
+docs/
+outputs/
+tests/
+.codex/
+.agents/
+mcps/
+agent-transcripts/
+*.plan.md
+
+# 排除 Markdown 文档，但保留项目必需的几个
+*.md
+!README.md
+!README-EN.md
+!CONTRIBUTING.md
+!CONTRIBUTING-EN.md
+
+# 报告模板目录中的 .md 文件需要保留（被 ReportEngine 使用）
+!ReportEngine/report_template/*.md

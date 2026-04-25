@@ -1,0 +1,68 @@
+{
+  "version": "phase-2.5-replay-v1",
+  "description": "Phase 2.5 固定回放样例集（首批 3 个主题）",
+  "cases": [
+    {
+      "case_id": "phase25-nev-price-war",
+      "query": "2026年新能源汽车价格战的舆情影响与风险",
+      "required_engines": ["insight", "media", "query"],
+      "expected_keypoints": [
+        "价格战",
+        "销量",
+        "利润压力",
+        "供应链",
+        "消费者预期"
+      ],
+      "expected_conflict_hints": [
+        "销量增长|销量放缓",
+        "短期促销|长期品牌伤害"
+      ],
+      "expect_evidence": true,
+      "pass_threshold": 0.72,
+      "min_dimension_scores": {
+        "structure_integrity": 0.8,
+        "coverage": 0.6,
+        "conflict_retention": 0.6,
+        "evidence_citation_stability": 0.5,
+        "quality_gate_pass_rate": 0.6
+      }
+    },
+    {
+      "case_id": "phase25-llm-regulation",
+      "query": "大模型监管政策变化对产业创新与合规成本的影响",
+      "required_engines": ["insight", "media", "query"],
+      "expected_keypoints": [
+        "监管政策",
+        "合规成本",
+        "创新速度",
+        "行业分层",
+        "风险控制"
+      ],
+      "expected_conflict_hints": [
+        "监管趋严|创新受限",
+        "安全提升|市场活力下降"
+      ],
+      "expect_evidence": true,
+      "pass_threshold": 0.72
+    },
+    {
+      "case_id": "phase25-cultural-tourism",
+      "query": "文旅城市流量暴涨后的可持续性与治理挑战",
+      "required_engines": ["insight", "media", "query"],
+      "expected_keypoints": [
+        "游客增长",
+        "公共服务承载",
+        "交通压力",
+        "口碑波动",
+        "长期转化"
+      ],
+      "expected_conflict_hints": [
+        "短期热度|长期复购",
+        "流量红利|治理成本"
+      ],
+      "expect_evidence": true,
+      "pass_threshold": 0.72
+    }
+  ]
+}
+

@@ -1,0 +1,445 @@
+/* Veyrafish Phase 2 visual base.
+   This file is intentionally an overlay so legacy IDs and JS hooks keep working. */
+:root {
+  --veyu-bg: #f7f3ec;
+  --veyu-paper: rgba(255, 252, 246, 0.9);
+  --veyu-paper-strong: rgba(255, 255, 255, 0.86);
+  --veyu-ink: #1a1a1a;
+  --veyu-muted: #5f5145;
+  --veyu-border: #e7d9c8;
+  --veyu-border-strong: #c8b89a;
+  --veyu-red: #8b1a1a;
+  --veyu-red-hover: #a82020;
+  --veyu-gold: #9b8050;
+  --veyu-green: #2e7d32;
+  --veyu-blue: #1565c0;
+  --veyu-shadow: 0 1px 4px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--veyu-border);
+  --veyu-hover: 0 4px 12px rgba(139, 26, 26, 0.12);
+}
+
+body {
+  background:
+    radial-gradient(circle at 78% 12%, rgba(184, 149, 106, 0.18), transparent 28%),
+    linear-gradient(180deg, var(--veyu-bg), #eee4d5);
+  color: var(--veyu-ink);
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+.container {
+  border: 0 !important;
+  background:
+    url("/assets/png/bambo3.png") right 76px / 180px auto no-repeat,
+    url("/assets/png/bottom1.png") left bottom / min(620px, 54vw) auto no-repeat,
+    transparent !important;
+  padding: 0 24px 10px !important;
+  max-width: 1500px !important;
+  margin: 0 auto !important;
+  overflow: auto !important;
+}
+
+.topbar {
+  min-height: 64px !important;
+  border-radius: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--veyu-border) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: 0 2px 10px rgba(80, 60, 40, 0.08) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+}
+
+.topbar-ink {
+  display: none !important;
+}
+
+.brand-crest {
+  min-width: 270px;
+}
+
+.brand-logo-seal {
+  width: 44px !important;
+  height: 44px !important;
+  object-fit: contain;
+}
+
+.brand-mark-text span {
+  font-size: 0;
+}
+
+.brand-mark-text span::after {
+  content: "维舆";
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--veyu-red);
+}
+
+.brand-kicker {
+  color: var(--veyu-gold) !important;
+  letter-spacing: 0.16em !important;
+}
+
+.brand-title {
+  color: var(--veyu-ink) !important;
+  font-family: "STSong", "SimSun", serif !important;
+  font-size: clamp(18px, 2vw, 27px) !important;
+  letter-spacing: 3px !important;
+}
+
+.brand-subtitle {
+  color: var(--veyu-muted) !important;
+}
+
+.nav-chip {
+  border-radius: 4px !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--veyu-ink) !important;
+  font-family: "STSong", "SimSun", serif !important;
+  font-size: 16px !important;
+  padding: 20px 8px 14px !important;
+  position: relative;
+}
+
+.nav-chip.active,
+.nav-chip:hover {
+  color: var(--veyu-red) !important;
+  font-weight: 700;
+}
+
+.nav-chip.active::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 6px;
+  height: 2px;
+  background: var(--veyu-red);
+}
+
+.dashboard-layout {
+  display: grid !important;
+  grid-template-columns: minmax(420px, 0.85fr) minmax(520px, 1.15fr) !important;
+  gap: 16px !important;
+  padding: 18px 0 0 !important;
+}
+
+.hero-panel,
+.overview-panel,
+.engine-panel,
+.workspace-panel {
+  border: 1px solid var(--veyu-border) !important;
+  border-radius: 8px !important;
+  background: var(--veyu-paper-strong) !important;
+  box-shadow: var(--veyu-shadow) !important;
+}
+
+.hero-panel {
+  min-height: 452px !important;
+  padding: 20px 26px !important;
+  grid-column: 1 / 2;
+}
+
+.overview-panel {
+  min-height: 452px !important;
+  padding: 20px 24px !important;
+  grid-column: 2 / 3;
+}
+
+.engine-panel {
+  grid-column: 1 / -1;
+  padding: 16px 22px !important;
+}
+
+.workspace-panel {
+  grid-column: 1 / -1;
+  padding: 16px !important;
+}
+
+.hero-grid {
+  display: block !important;
+}
+
+.hero-visual {
+  display: none !important;
+}
+
+.hero-label {
+  color: var(--veyu-gold) !important;
+  letter-spacing: 0.2em !important;
+}
+
+.hero-script {
+  color: var(--veyu-red) !important;
+}
+
+.hero-title {
+  margin: 8px 0 10px !important;
+  font-family: "STSong", "SimSun", serif !important;
+  letter-spacing: 4px !important;
+}
+
+.hero-title-main::before {
+  content: "维舆";
+  display: block;
+  color: var(--veyu-red);
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.05;
+  margin-bottom: 4px;
+}
+
+.hero-title-main,
+.hero-title-sub {
+  font-size: clamp(24px, 2.6vw, 36px) !important;
+  color: var(--veyu-ink) !important;
+}
+
+.hero-subtitle {
+  max-width: 640px !important;
+  color: var(--veyu-muted) !important;
+}
+
+.hero-quote {
+  border: 1px solid rgba(200, 184, 154, 0.8) !important;
+  border-radius: 8px !important;
+  background:
+    url("/assets/png/boat2-cple-trans.png") right bottom / 180px auto no-repeat,
+    rgba(250, 246, 238, 0.62) !important;
+  box-shadow: none !important;
+}
+
+.quote-seal-left,
+.hero-seal-stack,
+.overview-seal,
+.footer-seal {
+  filter: saturate(0.92);
+}
+
+.search-section {
+  margin-top: 18px !important;
+  border: 1px solid var(--veyu-border-strong) !important;
+  border-radius: 8px !important;
+  padding: 16px !important;
+  background:
+    url("/assets/png/infocloud.png") right 12px bottom 8px / 76px auto no-repeat,
+    rgba(255, 252, 246, 0.68) !important;
+}
+
+.search-title {
+  text-align: left !important;
+  font-family: "STSong", "SimSun", serif !important;
+  font-size: 18px !important;
+  letter-spacing: 2px !important;
+  margin-bottom: 10px !important;
+}
+
+.search-row {
+  align-items: stretch !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+.search-box {
+  border: 1px solid var(--veyu-border-strong) !important;
+  border-radius: 6px !important;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.search-input {
+  min-height: 42px !important;
+  padding: 10px 14px !important;
+  background: transparent !important;
+}
+
+.search-button,
+.btn-primary,
+.report-button.primary,
+.config-start-button,
+.config-save-button {
+  background: var(--veyu-red) !important;
+  border-color: var(--veyu-red) !important;
+  color: #fff !important;
+}
+
+.search-button:hover,
+.btn-primary:hover,
+.config-start-button:hover,
+.config-save-button:hover {
+  background: var(--veyu-red-hover) !important;
+}
+
+.upload-button,
+.config-button,
+.page-action-button,
+.btn-outline {
+  border: 1px solid var(--veyu-border-strong) !important;
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.58) !important;
+  color: var(--veyu-muted) !important;
+  box-shadow: none !important;
+}
+
+.config-button:hover,
+.page-action-button:hover,
+.upload-button:hover {
+  color: var(--veyu-red) !important;
+  border-color: var(--veyu-red) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: var(--veyu-hover) !important;
+}
+
+.panel-heading {
+  border-bottom: 1px solid var(--veyu-border) !important;
+  padding-bottom: 12px !important;
+  margin-bottom: 14px !important;
+}
+
+.panel-title {
+  font-family: "STSong", "SimSun", serif !important;
+  letter-spacing: 2px !important;
+}
+
+.panel-title::after,
+.search-title::after {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 2px;
+  margin-top: 8px;
+  background: var(--veyu-red);
+}
+
+.overview-callout,
+.overview-card,
+.hero-stat,
+.app-button {
+  border: 1px solid var(--veyu-border) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 252, 246, 0.72) !important;
+}
+
+.overview-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.overview-illustration {
+  max-height: 130px !important;
+}
+
+.app-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.app-button {
+  min-height: 150px !important;
+  padding: 16px 16px 14px 92px !important;
+  position: relative;
+}
+
+.engine-icon-badge {
+  position: absolute !important;
+  left: 18px;
+  top: 30px;
+  width: 58px !important;
+  height: 58px !important;
+  border-radius: 50% !important;
+  background: rgba(200, 184, 154, 0.16) !important;
+}
+
+.engine-icon-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+.app-button-name {
+  font-family: "STSong", "SimSun", serif !important;
+  color: var(--veyu-ink) !important;
+}
+
+.app-button-code,
+.app-button-note {
+  color: var(--veyu-muted) !important;
+}
+
+.status-indicator.running {
+  background: var(--veyu-green) !important;
+}
+
+.status-indicator.starting {
+  background: var(--veyu-gold) !important;
+}
+
+.workspace-shell {
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr) !important;
+}
+
+.workspace-main,
+.workspace-console {
+  border-radius: 8px !important;
+  border-color: var(--veyu-border) !important;
+}
+
+.workspace-console {
+  background: #111 !important;
+}
+
+.status-bar {
+  border: 1px solid var(--veyu-border) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 252, 246, 0.82) !important;
+  margin-top: 12px !important;
+}
+
+@media (max-width: 1180px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-panel,
+  .overview-panel,
+  .engine-panel,
+  .workspace-panel {
+    grid-column: 1 / -1;
+  }
+
+  .app-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .workspace-shell {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .container {
+    padding: 0 12px 8px !important;
+  }
+
+  .topbar,
+  .search-row {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .brand-crest {
+    min-width: 0;
+  }
+
+  .app-grid,
+  .overview-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .app-button {
+    padding-left: 16px !important;
+  }
+
+  .engine-icon-badge {
+    position: static !important;
+    margin-bottom: 10px;
+  }
+}

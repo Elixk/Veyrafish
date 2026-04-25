@@ -1,0 +1,49 @@
+{
+  "schema_version": "replay.route.v1",
+  "generated_at": "2026-03-15",
+  "entry_script": "scripts/router/invoke-pack-route.py",
+  "notes": "Curated recovery prompts for the Linux no-pwsh router bridge. These cases assert route usefulness, not full PowerShell parity.",
+  "cases": [
+    {
+      "id": "plan_task_breakdown",
+      "grade": "L",
+      "task_type": "planning",
+      "prompt": "create implementation plan and task breakdown",
+      "expected": {
+        "route_mode": "pack_overlay",
+        "selected_pack": "orchestration-core",
+        "selected_skill": "writing-plans"
+      }
+    },
+    {
+      "id": "migration_governance",
+      "grade": "L",
+      "task_type": "planning",
+      "prompt": "design a migration plan for cross-module routing and governance",
+      "expected": {
+        "route_mode": "pack_overlay",
+        "selected_pack": "orchestration-core",
+        "selected_skill": "writing-plans"
+      }
+    },
+    {
+      "id": "prd_backlog",
+      "grade": "L",
+      "task_type": "planning",
+      "prompt": "create PRD and user story backlog with quality gate",
+      "expected": {
+        "allowed_route_modes": ["pack_overlay", "confirm_required"],
+        "selected_pack": "aios-core"
+      }
+    },
+    {
+      "id": "ambiguous_low_signal",
+      "grade": "M",
+      "task_type": "research",
+      "prompt": "help me with this",
+      "expected": {
+        "allowed_route_modes": ["legacy_fallback", "confirm_required"]
+      }
+    }
+  ]
+}

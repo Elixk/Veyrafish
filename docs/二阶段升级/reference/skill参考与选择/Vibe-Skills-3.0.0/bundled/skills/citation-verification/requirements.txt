@@ -1,0 +1,4 @@
+bibtexparser
+requests
+semanticscholar
+arxiv

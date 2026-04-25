@@ -1,0 +1,6 @@
+*.ipynb binary
+
+* text=auto eol=lf
+
+*.html linguist-vendored
+*.js linguist-vendored

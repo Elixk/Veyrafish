@@ -1,0 +1,44 @@
+# 本地开发构建版本 —— 源码挂载，改代码后 restart 即可生效
+# 用法: docker compose -f docker-compose.local.yml up --build
+# 改源码后: docker compose -f docker-compose.local.yml restart veyrafish
+# 改依赖后: docker compose -f docker-compose.local.yml up --build
+
+services:
+  veyrafish:
+    build: .
+    container_name: veyrafish
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+      - STREAMLIT_SERVER_ENABLE_FILE_WATCHER=false
+    ports:
+      - "5000:5000"
+      - "8501:8501"
+      - "8502:8502"
+      - "8503:8503"
+    volumes:
+      - ./:/app
+      - /app/__pycache__
+      - /app/.venv
+      - ./logs:/app/logs
+      - ./final_reports:/app/final_reports
+      - ./insight_engine_streamlit_reports:/app/insight_engine_streamlit_reports
+      - ./media_engine_streamlit_reports:/app/media_engine_streamlit_reports
+      - ./query_engine_streamlit_reports:/app/query_engine_streamlit_reports
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: veyrafish-db
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-veyrafish}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-veyrafish}
+      POSTGRES_DB: ${POSTGRES_DB:-veyrafish}
+    ports:
+      - "${POSTGRES_PORT:-5544}:5432"
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
